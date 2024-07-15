@@ -1,22 +1,27 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { postRegister } from '../../services/user/apiMethods';
-// import loginimage from "../../../public/images/socialImg.png"
-// import { useDispatch } from 'react-redux';
+
+import React, {useState} from "react";
+import { toast } from "sonner";
+import { Link, useNavigate} from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import {initialValues, validationSchema} from '../../utils/validations/registerValidation'
+import { useDispatch } from "react-redux";
+import {googleAuthenticate, postRegister} from '../../services/user/apiMethods'
+import {auth, provider} from '../../utils/firebase/config'
+import {signInWithPopup} from 'firebase/auth'
+import { loginSuccess } from "../../utils/context/reducers/authSlice";
 
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate =  useNavigate()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const submit = (values) => {
     postRegister(values)
     .then((response) => {
       const data = response.data
         if(response.status === 200) {
+          console.log("response", response.data);
           toast.success(data.message)
           navigate(`/otp?email=${data.email}`)
           // navigate('/otp')
@@ -29,6 +34,38 @@ function Signup() {
       })
   }
 
+  const handlegoogleSignUp = () => {
+    signInWithPopup(auth, provider)
+    .then((data) => {
+      console.log("userdate from firebase", date);
+
+      const userdate = {
+        userName: date.user.displayName,
+        email: data.user.email,
+        profileImg: date.user.photoURL,
+      }
+
+      console.log("user details", userDate);
+
+      googleAuthenticate({userData})
+      .then((response) => {
+        const data = response.data
+        if(response.status == 200){
+          toast.info(data.message)
+          dispatchEvent(loginSuccess({user: data}))
+          navigate('/')
+        } else {
+          toast.error(data.message)
+          console.log(response.message);
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.message)
+        console.log(error?.message);
+      })
+    })
+  }
+
   return (
     <div className='flex flex-col md:flex-row justify-center h-screen bg-white'>
       {/* left side */}
@@ -37,7 +74,8 @@ function Signup() {
           <h2 className='text-2xl font-semibold text-center mb-6 mt-2'>Get Started Now</h2>
 
           <Formik
-           
+          initialValues={initialValues}
+          validationSchema={validationSchema}        
             onSubmit={submit}
             >
 
@@ -98,13 +136,13 @@ function Signup() {
                   >
                   {showPassword? 
           
-                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
                   <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
                   : 
-                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
@@ -133,13 +171,13 @@ function Signup() {
                   >
                   {showConfirmPassword? 
           
-                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
                   <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
                   : 
-                  <svg class="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
@@ -154,7 +192,7 @@ function Signup() {
                 type="submit">SignUp
                 </button> */}
                 <button
-                  class=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 "
+                  className=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 "
                 >
                   SignUp
                 </button>
@@ -169,6 +207,7 @@ function Signup() {
 
           <button 
             type="button" 
+            onClick={handlegoogleSignUp}
           className="bg-white font-medium justify-center w-full active:bg-blueGray-50 text-blueGray-700  px-4 py-3 rounded-md outline-grey focus:outline-none mr-3 mb-5  uppercase shadow hover:shadow-md inline-flex items-center text-xs ease-linear transition-all duration-150">
             <img
               alt="..."

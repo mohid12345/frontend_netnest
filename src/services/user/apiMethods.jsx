@@ -19,12 +19,65 @@ export const postRegister = (userData) => {
   })
 }
 
+// OTP verification
+export const postOTP = (otp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.registerOtp, otp)
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({status:500, message: "something wrong"})
+    }
+  })
+} 
+
+// resent otp
+export const postResendOTP = (email) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("postresendotp");
+      apiCall("post", userUrls.resendOtp, email)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
 // login
 
 export const postLogin = (userData) => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("post", userUrls.login, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// forgotOTP
+
+export const forgotOTP = (otp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.forgotOtp, otp)
         .then((response) => {
           resolve(response)
         })
@@ -54,3 +107,44 @@ export const forgotPassword = (email) => {
     }
   })
 }
+
+
+// renew password
+
+export const renewPassword = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.resetPassword, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
+
+// google authentication
+
+export const googleAuthenticate = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("userdata in api method", userData)
+      apiCall("post", userUrls.googleAuth, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
