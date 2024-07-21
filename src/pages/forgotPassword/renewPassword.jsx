@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { renewPassword } from '../../services/user/apiMethods';
-// import resetpswdImg from "../../../public/images/resetpswdImg.jpg"
+import resetpswdImg from "/public/images/resetpswdImg.jpg"
 import { initialValues, validationSchema } from '../../utils/validations/renewPasswordValidation';
 
 function RenewPassword() {  

@@ -1,17 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import loginimage from "/images/loginImg.jpg"
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { initialValues, validationSchema } from '../../utils/validations/loginValidation';
+import { useDispatch, useSelector } from 'react-redux';
+import { googleAuthenticate, postLogin } from '../../services/user/apiMethods';
+import { toast } from 'sonner';
+import { loginSuccess } from '../../utils/context/reducers/authSlice';
+import {auth, provider} from "../../utils/firebase/config"
+import {signInWithPopup} from "firebase/auth"
+import logoImg from "/images/logoNet.png"
 
 function Login() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const selectUser = (state) => state.auth.user
+  const user = useSelector(selectUser)
  const [showPassword, setShowPassword] = useState(false);
+
+ useEffect(()=> {
+  if(user){
+    navigate('/')
+  }
+ },[user,navigate])
+
   const submit = (values) => {
+    console.log(values);
     postLogin(values)
       .then((response) => {
         const data = response.data
         if(response.status == 200) {
           toast.info(data.message)
-          dispatch(loginSuccuss({user: data}))
-        //   navigate('/')
+          dispatch(loginSuccess({user: data}))
+          navigate('/')
         } else {
           toast.error(data.message)
           console.log(response.message);
@@ -23,6 +44,39 @@ function Login() {
       })
   }
 
+  const handlegoogleSignUp=() => {
+    signInWithPopup(auth, provider)
+    .then((data) => {
+      console.log("userdate from firebase", data);
+
+      const userData = {
+        userName: data.user.displayName,
+        email: data.user.email,
+        profileImg: data.user.photoURL
+      }
+
+      console.log("user details", userData);
+
+      googleAuthenticate({userData})
+      .then((response) => {
+        const data = response.data
+        if(response.status == 200){
+          toast.info(data.message)
+          dispatch(loginSuccess({user:data}))
+          navigate('/')
+        } else {
+          toast.error(data.message)
+          console.log(response.message);
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.message)
+        console.log(error?.message);
+      })
+      
+    })
+  }
+
   return (
     <div className="flex flex-col md:flex-row justify-center bg-white h-screen">
       {/* Left side: Login form */}
@@ -31,7 +85,8 @@ function Login() {
           <h2 className="text-2xl font-semibold text-center mb-5">Welcome Back!</h2>
 
           <Formik 
-          
+          initialValues={initialValues}
+          validationSchema={validationSchema}
             onSubmit={submit}
             >
             <Form className="max-w-md mx-auto">
@@ -68,6 +123,7 @@ function Login() {
                 >
                   Password
                 </label>
+                
                 <span 
                   className="absolute right-3 top-3 cursor-pointer" 
                   onClick={() => setShowPassword(!showPassword)}
@@ -75,13 +131,13 @@ function Login() {
                   {showPassword? 
           
                   <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
-                  <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
-                  <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  <path stroke="currentColor" strokeWidth="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                  <path stroke="currentColor" strokeWidth="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
                   : 
                   <svg className="w-6 h-6 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 28 28">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
         
                   } 
@@ -91,17 +147,13 @@ function Login() {
 
               {/* forgot password */}
               <div className='text-sm mb-2 text-black flex justify-end mb-6'>
-                {/* <Link to="/forgot-password" className='hover:underline hover:text-red-600'>
+                <Link to="/forgot-password" className='hover:underline hover:text-red-600'>
                   Forgot Password
-                </Link> */}
+                </Link>
               </div>
               
               <div className="flex items-center justify-between mb-3">
-                {/* <button 
-                className=" bg-gray-500 hover:bg-blue-700 text-white font-bold w-full py-1.5 px-4 rounded focus:outline-none focus:shadow-outline" 
-                type="submit">Sign In
-                </button> */}
-                <button
+             <button
                   className=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 "
                 >
                   Sign In
@@ -117,7 +169,7 @@ function Login() {
 
           <button 
             type="button" 
-            // onClick={handlegoogleSignUp}
+            onClick={handlegoogleSignUp}
             className="bg-white font-medium justify-center w-full active:bg-blueGray-50 text-blueGray-700  px-4 py-3 rounded-md outline-grey focus:outline-none mr-3 mb-5  uppercase shadow hover:shadow-md inline-flex items-center text-xs ease-linear transition-all duration-150">
             <img
               alt="..."
@@ -137,11 +189,11 @@ function Login() {
       </div>
       {/* Right side: Image */}
       <div className='hidden md:flex md:w-1/2 items-center bg-white'>
-          {/* <img className='w-auto h-20' src={logoImg} alt="" /> */}
+           <img className='w-auto h-20' src={logoImg} alt="" /> 
         <div className='p-14'>
           <img 
-            className='w-full p-0 ' // Add hover effect here
-            // src={loginimage} 
+            className='w-full p-0 ' 
+            src={loginimage} 
             alt="" 
           />
         </div>

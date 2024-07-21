@@ -1,4 +1,3 @@
-
 import React, {useState} from "react";
 import { toast } from "sonner";
 import { Link, useNavigate} from 'react-router-dom'
@@ -9,13 +8,14 @@ import {googleAuthenticate, postRegister} from '../../services/user/apiMethods'
 import {auth, provider} from '../../utils/firebase/config'
 import {signInWithPopup} from 'firebase/auth'
 import { loginSuccess } from "../../utils/context/reducers/authSlice";
+import loginimage from "/images/socialImg.png"
 
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate =  useNavigate()
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const submit = (values) => {
     postRegister(values)
     .then((response) => {
@@ -37,22 +37,22 @@ function Signup() {
   const handlegoogleSignUp = () => {
     signInWithPopup(auth, provider)
     .then((data) => {
-      console.log("userdate from firebase", date);
+      console.log("userdate from firebase", data);
 
-      const userdate = {
-        userName: date.user.displayName,
+      const userData = {
+        userName: data.user.displayName,
         email: data.user.email,
-        profileImg: date.user.photoURL,
+        profileImg: data.user.photoURL,
       }
 
-      console.log("user details", userDate);
+      console.log("user details", userData);
 
       googleAuthenticate({userData})
       .then((response) => {
         const data = response.data
         if(response.status == 200){
           toast.info(data.message)
-          dispatchEvent(loginSuccess({user: data}))
+          dispatch(loginSuccess({user: data}))
           navigate('/')
         } else {
           toast.error(data.message)
@@ -228,7 +228,7 @@ function Signup() {
       {/* right side */}
       <div className='hidden md:flex md:w-1/2 items-center bg-white'>
         <div className='p-20'>
-          {/* <img className='w-full p-20 ' src={loginimage} alt="" /> */}
+          <img className='w-full p-20 ' src={loginimage} alt="" />
         </div>
       </div>
     </div>

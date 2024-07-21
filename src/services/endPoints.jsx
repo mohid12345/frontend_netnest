@@ -12,3 +12,12 @@ export const userUrls = {
   
   }
   
+
+  export const adminUrls = {
+    login: "/admin/login",
+    userBlock: "/admin/user-block",
+    userList: "/admin/get-users",
+    postList: "/admin/get-posts",
+    postBlock: "/admin/post-block",
+    getDetails: "/admin/get-details"
+  }

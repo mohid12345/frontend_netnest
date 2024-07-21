@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { api } from "./api";
 import {store} from "../../utils/context/store";
-// import { logout } from "../../utils/context/reducers/authSlice";
+import { logout } from "../../utils/context/reducers/authSlice";
 
 export const apiCall = async(method, url, data) => {
   return await new Promise(async (resolve, reject) => {

@@ -8,19 +8,22 @@ import rootReducer from "./rootReducer"
 const persistConfig = {
     key : "root",
     storage,
-    whitelist: ["auth"]
+    whitelist: ["auth", "adminAuth"]
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-export const store = configureStore({
+const store = configureStore({
     reducer: persistedReducer,
-    // middleware: [thunk, logger]
-    // middleware: getDefaultMiddleware({
-    //     serializableCheck: {
-    //       ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-    //     },
-    //   }),
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+                ignoredPaths: ['register', 'rehydrate']
+            }
+        })
 })
 
-export const persistor = persistStore(store)
+const persistor = persistStore(store)
+
+export {store, persistor}

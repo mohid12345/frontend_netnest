@@ -1,5 +1,5 @@
 import React from 'react'
-// import forgotpswdIng from "../../../public/images/forgotpswdImg.jpg"
+import forgotpswdIng from "/images/forgotpswdImg.jpg"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from "yup";

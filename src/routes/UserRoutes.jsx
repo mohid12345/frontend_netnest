@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Protect from "./protectedRoutes/protectedRoute";
 import Login from "../pages/login/login";
 import App from "../App";
 import HomePage from "../pages/userHomePage/HomePage";
@@ -7,6 +8,9 @@ import Otp from "../pages/otpPage/otp"
 import ForgotOtp from "../pages/otpPage/forgotOtp"
 import ForgotPassword from "../pages/forgotPassword/forgotPassword"
 import RenewPassword from "../pages/forgotPassword/renewPassword";
+import Profile from "../pages/profile/Profile"
+// import UserProfile from "../pages/userProfile/UserProfile"
+import {adminLoginRouter, adminRouter} from "./adminRouter"
 
 const appRouter = createBrowserRouter([
     {
@@ -19,6 +23,14 @@ const appRouter = createBrowserRouter([
                 path: "/",
                 element: <HomePage/>
             }
+            ,{
+                path: '/profile',
+                element: <Profile/>
+            }
+            // ,{
+            //     path: '/user-profile/:userId',
+            //     element: <UserProfile/>
+            // }
         ]
     },
     {
@@ -46,7 +58,9 @@ const appRouter = createBrowserRouter([
     {
         path: "/renew-password",
         element: <RenewPassword/>
-    }
+    },
+    adminLoginRouter,
+    adminRouter
 ])
 
 export default appRouter

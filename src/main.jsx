@@ -1,7 +1,7 @@
 import './index.css'
 import React from 'react'
 import App from './App'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import {store, persistor} from './utils/context/store'
 import appRouter from './routes/UserRoutes'
 import { Provider } from 'react-redux'

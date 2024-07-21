@@ -18,8 +18,11 @@ const authSlice = createSlice({
             state.token = null
             state.post = []
         },
+        setPosts: (state,action) => {
+            state.posts = action.payload.posts
+        }
     }
 })
 
-export const {loginSuccess,logout} = authSlice.actions
+export const {loginSuccess,logout, setPosts} = authSlice.actions
 export default authSlice.reducer

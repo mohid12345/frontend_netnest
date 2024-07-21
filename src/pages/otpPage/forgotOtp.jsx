@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import otpImg from '/public/images/otpImg.jpg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { forgotOTP, postResendOTP } from '../../services/user/apiMethods'

@@ -2,10 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { postOTP, postResendOTP } from '../../services/user/apiMethods'
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../utils/context/reducers/authSlice';
+
 
 
 function Otp() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [getOtp, setOtp] = useState("")
 
   const location = useLocation()
@@ -55,7 +59,7 @@ function Otp() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const otp = getOtp || ""
-    console.log("otp:", otp );
+    console.log("otp in :", otp );
     if(otp.trim().length !==4 || otp == "") {
       // toast.error("invalid OTP")
       return
@@ -63,12 +67,15 @@ function Otp() {
 
     postOTP({otp: otp}) 
       .then((response) => {
-        console.log("In response");
+        console.log("In response 1z:", response);
         const data = response.data
+        console.log("In response 2z:", data);
+        
         if(response.status == 200) {
           toast.success(data.message)
           localStorage.removeItem("otpTimer");
-          navigate("/")
+          dispatch(loginSuccess({user: data}))
+              navigate('/')
         } else {
           toast.error(data.message)
         }
