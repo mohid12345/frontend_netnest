@@ -1,5 +1,5 @@
 import { apiCall } from "./apiCalls";
-import { userUrls } from "../endPoints";
+import { postUrls, userUrls } from "../endPoints";
 
 //user registration
 
@@ -170,7 +170,7 @@ export const addPost = (postData) => {
 //get user post
 export const getUserPost = (userId) => {
   return new Promise((resolve, reject) =>{
-    try{
+    try {
       console.log("in userpost api call");
       const url = `${postUrls.getUserPosts}/${userId}`
       apiCall("get", url, null)
@@ -180,7 +180,7 @@ export const getUserPost = (userId) => {
       .catch((err) => {
         reject(err)
       })
-    } catch (error){
+    } catch (error) {
       resolve({status: 500, message: "Something wrong"})
     }
   })
@@ -203,3 +203,60 @@ export const getAllPosts = (userId) => {
   }
 })
 }
+// get all posts
+export const getEditPost = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      // console.log("userid in getallpost",userId);
+      apiCall("post", postUrls.getEditPost, postId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
+// delete post
+export const deletePost = (postData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", postUrls.deletePost, postData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
+// user edit profile
+export const editProfile = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("userdata in api method", userData)
+      apiCall("post", userUrls.editProfile, userData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
+

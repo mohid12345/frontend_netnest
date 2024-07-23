@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../utils/context/reducers/authSlice'
-// import { logout, setPosts } from '../../utils/context/reducers/authSlice'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import PostGallery from '../../components/profile/postGallery'
-// import { getSavedPosts, getUserConnection, getUserPost } from '../../services/user/apiMethods'
 import emptypost from '../../../public/images/nopost.jpg'
-// import UserEditProfile from '../../components/profile/UserEditProfile'
-// import FollowingList from '../../components/profile/FollowingList'
-// import FollowersList from '../../components/profile/FollowersList'
 import Loader from '../../components/loader/loader'
 
 
@@ -42,42 +37,6 @@ function Profile() {
     setIsFollowersgModal(!isFollowersgModal)
   }
 
-  useEffect(() => {
-    try {
-      setLoading(true)
-      getUserPost(userId)
-        .then((response) => {
-          const postsData = response.data
-          dispatch(setPosts({posts: postsData}))
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-
-      getUserConnection({userId:userId})
-        .then((response)  => {
-          const connectionData = response.data.connection;  
-          setFollowers(connectionData.followers)
-          setFollowing(connectionData.following)
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-
-      getSavedPosts(userId)
-        .then((response) => {
-          const savedPostData = response.data
-          setSavedPost(savedPostData)
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        })
-      setLoading(false)
-
-    } catch (error) {
-      console.log(error);
-    }
-  }, [userId, dispatch])
 
   // logout
   const handleLogout = () => {
@@ -200,22 +159,6 @@ function Profile() {
           </div>
         </div>
         }
-{/* 
-        {IsEditProfileOpen && <UserEditProfile user={user} 
-        handleEditModal={handleEditModal} />}
-
-        {isFollowersgModal && <FollowersList 
-        followers={followers}
-        followingUsers={following}
-        setFollowingUsers={setFollowing}
-        onClose={handleFollowersModal} /> }
-
-        {isFollowingModal && <FollowingList 
-        currentUser={userId}
-        followingUsers={following}
-        setFollowingUsers={setFollowing}
-        onClose={handleFollowingModal} />} */}
-
       </div>
   )
 }

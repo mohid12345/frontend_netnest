@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-// import AddPost from '../posts/addPost';
-import logoImg from "../../../public/images/logoNet.png"
-// import Searchbar from '../searchbar/Searchbar';
-// import Notification from '../notification/Notification';
-// import Settings from '../settings/Settings';
+import AddPost from '../posts/addPost';
+import logoImg from "/images/logoNet.png"
+
   
 function SideNavBar() {
   const navigate = useNavigate()
@@ -27,7 +25,13 @@ function SideNavBar() {
   const closeAddPostModal = () => {
     setIsAddPostOpen(false);
   };
-
+  
+  const handleClose = () => {
+    closeSidebar()
+    closeSearchbar()
+    closeNotification()
+  }
+ 
   // search bar
   const [isSearchbarOpen, setSearchbarOpen] = useState(false)
   const openSearchbar = () => {
@@ -35,39 +39,7 @@ function SideNavBar() {
     closeSidebar()
     closeNotification()
   }
-  const closeSearchbar = () => {
-    setSearchbarOpen(false);
-  }
-
-  const handleClose = () => {
-    closeSidebar()
-    closeSearchbar()
-    closeNotification()
-  }
-
-  // notifications
-  const [isNotificationOpen, setNotificationOpen] = useState(false)
-  const openNotification = () => {
-    setNotificationOpen(true)
-    closeSidebar()
-    closeSearchbar()
-  }
-  const closeNotification = () => {
-    setNotificationOpen(false)
-  }
-
-  // settings
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const openSettingsModal = () => {
-    setIsSettingsOpen(true);
-    closeSidebar()
-  };
-  const closeSettingsModal = () => {
-    setIsSettingsOpen(false);
-  };
-
-  return (
-    // <div className="w-full max-w-xs block justify-end">
+   return (
     <div className="sm:w-0 md:w-4/12 max-w-72 block justify-end sm:p-0 md:p-2">
       <button
         type="button"
@@ -104,10 +76,9 @@ function SideNavBar() {
               </div>
               <div className="flex justify-end p-2 sm:hidden">
                 <button 
-                  onClick={handleClose}
-                  className="text-white px-2 py-2 rounded"
+                 className="text-white px-2 py-2 rounded"
                 >
-                  <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <svg className="w-9 h-9 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                   </svg>
                 </button>
@@ -118,7 +89,6 @@ function SideNavBar() {
                 <li>
                   <Link
                     to={"/" }
-                    onClick={handleClose}
                     className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
@@ -155,7 +125,6 @@ function SideNavBar() {
                 <li>
                     <Link
                     to={"/chat" }
-                    onClick={handleClose}
                     className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
@@ -183,23 +152,19 @@ function SideNavBar() {
                 </li>
                 <li>
                     <div 
-                      onClick={openNotification}
+                      
                       className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
                       aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M17.133 12.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V3.1a1 1 0 0 0-2 0v2.364a.933.933 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C6.867 15.018 5 15.614 5 16.807 5 17.4 5 18 5.538 18h12.924C19 18 19 17.4 19 16.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.391A1.001 1.001 0 1 1 6.854 5.8a7.43 7.43 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 17.146 5.8a1 1 0 0 1 1.471-1.354 9.424 9.424 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM8.823 19a3.453 3.453 0 0 0 6.354 0H8.823Z"/>
                       </svg>
                       <span className="flex-1 ms-3 whitespace-nowrap text-lg">Notifications</span>
-                      {/* <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M8.00059 3.01934C9.56659 1.61334 11.9866 1.66 13.4953 3.17134C15.0033 4.68334 15.0553 7.09133 13.6526 8.662L7.99926 14.3233L2.34726 8.662C0.944589 7.09133 0.997256 4.67934 2.50459 3.17134C4.01459 1.662 6.42992 1.61134 8.00059 3.01934Z" fill="#EF4444" />
-                      </svg> */}
                     </div>
-                    {isNotificationOpen && <Notification onClose={closeNotification} /> }
-                </li>
+                    </li>
                 <li>
                   <div
-                    onClick={openAddPostModal}
-                    className="flex items-center cursor-pointer p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                  onClick={openAddPostModal}
+                   className="flex items-center cursor-pointer p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -214,13 +179,12 @@ function SideNavBar() {
                   </div>
                 </li>
                 {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />}
-              </ul>
+               </ul>
               <ul className="pt-4 mt-4 space-y-0 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>
                   <Link
                     to={"/profile" }
-                    onClick={handleClose}
-                    className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                   className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                   >
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -236,8 +200,7 @@ function SideNavBar() {
                 </li>
                 <li>
                   <div
-                    onClick={openSettingsModal}
-                    className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
+                className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
                   >
                     <svg
                       className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -251,8 +214,7 @@ function SideNavBar() {
                     <span className="ms-3 text-lg">Settings</span>
                   </div>
                 </li>
-                { isSettingsOpen && <Settings onClose={closeSettingsModal} /> }
-              </ul>
+               </ul>
           </div>
         </aside>
       </div>

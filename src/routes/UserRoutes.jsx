@@ -16,7 +16,9 @@ const appRouter = createBrowserRouter([
     {
         path: "/",
         element: (
+            <Protect>
             <App/>
+            </Protect>
         ),
         children:[
             {
@@ -27,10 +29,7 @@ const appRouter = createBrowserRouter([
                 path: '/profile',
                 element: <Profile/>
             }
-            // ,{
-            //     path: '/user-profile/:userId',
-            //     element: <UserProfile/>
-            // }
+
         ]
     },
     {

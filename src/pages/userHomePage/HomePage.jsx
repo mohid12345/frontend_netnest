@@ -54,7 +54,7 @@ function HomePage() {
           <div className="p-2 rounded-md  bg-white">
             <Header />
           </div>
-          {/* <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
+           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
             {posts.map((post) => {
               // console.log("post in inside home", post);
               return (
@@ -66,7 +66,7 @@ function HomePage() {
                 </div>
               )
             })}
-          </div> */}
+          </div> 
         </div>
        
       {/* </div> */}

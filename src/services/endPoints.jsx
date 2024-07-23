@@ -11,6 +11,16 @@ export const userUrls = {
     editProfile: "/edit-profile",
   
   }
+  export const postUrls = {
+    getUserPosts: "/post/get-user-post",
+    getAllPosts: "/post/get-post",
+    getEditPost: "/post/get-edit-post",
+    addPost: "/post/add-post",
+    editPost: "/post/edit-post",
+    // deletePost: "/post/delete-post",
+
+  }
+  
   
 
   export const adminUrls = {

@@ -1,7 +1,6 @@
 import React, {useEffect} from "react"
 import { useSelector } from "react-redux"
 import { Outlet, Route, BrowserRouter as Router, Routes, useNavigate } from "react-router-dom"
-// import HomePage from './pages/userHomePage/HomePage'
 import Protect from './routes/protect'
 import SideNavBar from './components/sidebar/SideNavBar'
 
