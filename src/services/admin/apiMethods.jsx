@@ -106,6 +106,8 @@ export const getDashboardDetails = () => {
       adminApiCalls("get",adminUrls.getDetails, null) 
         .then((response) => {
           resolve(response)
+          console.log('front daash detail :', response);
+          
         })
         .catch((err) => {
           reject(err)
