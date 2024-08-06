@@ -18,7 +18,7 @@ function App() {
   return (
     <>
     <Protect>
-      <div className="flex">
+      <div className="flex dark:bg-black">
         <SideNavBar/>
         <Outlet/>
       </div>

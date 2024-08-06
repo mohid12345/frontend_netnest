@@ -56,7 +56,7 @@ function Otp() {
     setOtp(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { 
     e.preventDefault()
     const otp = getOtp || ""
     console.log("otp in :", otp );
@@ -75,7 +75,7 @@ function Otp() {
           toast.success(data.message)
           localStorage.removeItem("otpTimer");
           dispatch(loginSuccess({user: data}))
-              navigate('/')
+              navigate('/login')
         } else {
           toast.error(data.message)
         }

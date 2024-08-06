@@ -5,6 +5,10 @@ import {logout} from '../../utils/context/reducers/authSlice'
 // import { getUserSuggestions } from '../../services/user/apiMethods'
 import { ArrowBigDownDash, UserRoundPlus } from 'lucide-react'
 
+import { DarkModeSwitch } from "react-toggle-dark-mode";
+import useDarkSide from "../../utils/hooks/useDarkSide";
+
+
 
 function MiniProfile() {    
     const selectedUser = (state) => state.auth.user
@@ -20,6 +24,18 @@ function MiniProfile() {
         toast.info("Logout Successfull")
         navigate('/login')
     }
+    // const toggleDarkMode = () => {
+    //     console.log("heloo");
+        
+    //     document.documentElement.classList.toggle('dark')
+    // }
+    const [colorTheme, setTheme] = useDarkSide();
+  const [darkSide, setDarkSide] = useState(colorTheme === "light" ? true : false);
+
+  const toggleDarkMode = (checked) => {
+    setTheme(colorTheme);
+    setDarkSide(checked);
+  };
 
     // useEffect(() => {
     //     // console.log("inside minprofile");   
@@ -34,6 +50,8 @@ function MiniProfile() {
     // },[])
     
     return (
+
+        
         
         <div className="w-full mr-2 max-w-xs block  justify-end p-4">
             <div className=" w-full mb-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-black dark:border-gray-700">
@@ -68,7 +86,35 @@ function MiniProfile() {
 
                         </Link>
                     </div>
-                    <div className="flex mt-4 md:mt-6">
+                    {/* <div>
+                    <label class="inline-flex items-center my-5 cursor-pointer" onClick={toggleDarkMode}>
+                        <input type="checkbox" value="" class="sr-only peer"/>
+                        <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Dark Mode</span>
+                    </label>
+                        
+                    </div> */}
+
+
+<div className="flex items-center justify-center p-4">
+      <DarkModeSwitch
+        style={{ marginBottom: "2rem" }}
+        checked={darkSide}
+        onChange={toggleDarkMode}
+        size={30}
+        sunColor="#fcd34d"
+        moonColor="#4b5563"
+        className="transition duration-500 ease-in-out"
+      />
+    </div>
+
+                    
+
+
+
+
+
+                    <div className="flex ">
                         {/* <Link to={'/profile'} className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Profile</Link> */}
                         <button onClick={handleLogout}
                             class="overflow-hidden relative w-32 p-2 h-10 flex justify-center items-center bg-gray-600 text-white border-none rounded-md text-xl font-bold cursor-pointer z-10 group"

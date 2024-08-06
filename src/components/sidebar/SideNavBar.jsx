@@ -64,15 +64,15 @@ function SideNavBar() {
 
         <aside
           id="logo-sidebar"
-          className={`pl-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          className={`pl-2 ml-0 border hover:shadow-md fixed top-0 left-0 z-40 w-60 h-screen transition-transform ${
             isSidebarOpen ? '' : '-translate-x-full sm:translate-x-0'
           }`}
           aria-label="Sidebar"
         >
           <div className=" h-full px-3 py-4 overflow-y-auto bg-white dark:bg-black">  
-          <div className='flex justify-between'>
-              <div className="logo-container  max-w-32 h-auto overflow-hidden flex">
-                <img className='logo-img transition-transform duration-300 ease-in-out transform hover:scale-110 w-28 flex' src={logoImg} alt="" />
+          <div className='flex justify-center '>
+              <div className="logo-container max-w-64 h-auto overflow-hidden">
+                <img className='logo-img transition-transform duration-300 ease-in-out transform hover:scale-110 w-64 flex' src={logoImg} alt="" />
               </div>
               <div className="flex justify-end p-2 sm:hidden">
                 <button 

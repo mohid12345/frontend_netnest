@@ -51,10 +51,10 @@ function HomePage() {
         
 
         <div className="flex flex-col mr-2 lg:ml-5" style={{width:'870px'}}>
-          <div className="p-2 rounded-md  bg-white">
+          <div className="p-1 rounded-md  bg-white dark:bg-slate-700">
             <Header />
           </div>
-           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white">
+           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-slate-700">
             {posts.map((post) => {
               // console.log("post in inside home", post);
               return (

@@ -1,5 +1,3 @@
-// import PostList from "../components/admin/PostList";
-import ReportList from "../components/admin/ReportList";
 import UserList from "../components/admin/UserList";
 import Admin from "../pages/admin/Admin";
 import AdminDashboard from "../pages/admin/dashboard/AdminDashboard";
@@ -20,16 +18,9 @@ export const adminRouter = {
     {
       path: "/admin/users",
       element: <UserList />
-    },
-    // {
-    //   path: "/admin/posts",
-    //   element: <PostList />
-    // },
-    {
-      path: "/admin/reports",
-      element: <ReportList/>
     }
   ]
+  
 }
 
 export const adminLoginRouter = {

@@ -52,7 +52,7 @@ function HomePosts({post, fetchposts}) {
 
 
   return (
-    <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border">
+    <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border dark:bg-slate-800 dark:text-white dark:border-gray-400">
       
       <div>
       <div className='flex justify-between items-center'>
@@ -64,8 +64,8 @@ function HomePosts({post, fetchposts}) {
             <img className='rounded-full object-cover w-full h-full' src={profileImg} alt="" />
           </div>
           <div className=' mb-1'>
-            <p className='text-black lg:ml-4 ml-2 font-medium lg:text-xl'>{userName}</p>
-            <p className='text-black lg:ml-4 ml-2 font-normal lg:text-sm'>{postDate}</p>
+            <p className='text-black lg:ml-4 ml-2 font-medium lg:text-xl dark:text-white'>{userName}</p>
+            <p className='text-black lg:ml-4 ml-2 font-normal lg:text-sm dark:text-white'>{postDate}</p>
           </div>
         </div>
 
