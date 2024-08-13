@@ -14,7 +14,7 @@ export const userUrls = {
     changePassword: "/change-password",
     userSuggestions: "/user-suggestions",
     getAllUsers: "/get-users",
-    switchToPrivate: "/switch-to-private"
+    switchToPrivate: "/switch-to-private",
   
   }
   export const postUrls = {
@@ -36,7 +36,8 @@ export const userUrls = {
     commentCount: "/post/get-comments-count",
     handleComment: "/post/handle-comment",
     handleLike: "/post/handle-like",
-    getExplorePosts: "/post/get-explore-post"
+    getExplorePost: "/post/get-explore-post"
+    
 
   }
 
@@ -56,6 +57,7 @@ export const userUrls = {
     userBlock: "/admin/user-block",
     userList: "/admin/get-users",
     postList: "/admin/get-posts",
+    reportList: "/admin/get-reports",
     postBlock: "/admin/post-block",
     getDetails: "/admin/get-details"
   }

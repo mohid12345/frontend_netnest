@@ -4,6 +4,7 @@ import AdminDashboard from "../pages/admin/dashboard/AdminDashboard";
 import AdminLogin from "../pages/admin/login/adminLogin";
 import AdminProtect from "./adminProtect";
 import PostList from "../components/admin/PostList";
+import ReportList from "../components/admin/ReportList";
 
 export const adminRouter = {
   path: "/admin",
@@ -23,6 +24,10 @@ export const adminRouter = {
     {
       path: "/admin/posts",
       element: <PostList />
+    },
+    {
+      path: "/admin/reports",
+      element: <ReportList/>
     }
   ]
   

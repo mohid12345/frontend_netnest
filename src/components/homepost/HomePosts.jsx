@@ -7,11 +7,10 @@ import {toast} from 'sonner'
 import { loginSuccess, setPosts } from "../../utils/context/reducers/authSlice";
 import EditPost from "./EditPost";
 import ReportModal from './ReportModal'
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
+import { Heart, MessageCircle } from 'lucide-react';
 import LikedUsers from './LikedUsers'
 import ViewPost from './ViewPost'
 import ConfirmationModal from './ConfirmationModal'
-import SharePost from '../sharePost/SharePost'
 
 
 
@@ -240,11 +239,7 @@ const handleLikedUsersPopup =() => {
 
 
 
-  //share post
-  const [sharePostModal, setSharePostModal] = useState(false)
-  const handleSharePostModal = () => {
-    setSharePostModal(!sharePostModal)
-  }
+
 
 
 
@@ -383,11 +378,11 @@ const handleLikedUsersPopup =() => {
               </button>
             </div>
               
-            <div className='group relative'>
-              <div className='transition-transform transform group-hover:scale-110 duration-200'>
+            {/* <div className='group relative'>
+              <div onClick={handleSharePostModal} className='transition-transform transform group-hover:scale-110 duration-200'>
               <Share2 className='text-black hover:text-gray-600'/>
               </div>
-            </div>
+            </div> */}
             </div>
             {/* save post */}
 
@@ -423,20 +418,28 @@ const handleLikedUsersPopup =() => {
           </div>
           {likeCount > 0 ?
               <div>
-                {!isLikesEnabled && (
-                  <div>
+              {!isLikesEnabled && (
+              <div>
                 {/* <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600'>
                 likes are hidden
               </span> */}
               </div>
-            )}
-            {isLikesEnabled && (
-              <span onClick={handleLikedUsersPopup}
-              className="font-semibold curson-pointer ml-2 py-0">
-              {likeCount} likes
-              </span>
-            )}
-            </div> : ''
+              )}
+              {isLikesEnabled && (
+                <div className='flex'>
+                  <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0 text-gray-700 dark:text-white hover:text-black'>
+                    {likeCount} likes 
+                  </span>
+                  {commentsCount > 0 && (
+                    <span 
+                      onClick={() => handlePostPopup()} 
+                      className='font-semibold cursor-pointer ml-2 text-gray-700 dark:text-white hover:text-black'>
+                    & view all {commentsCount} comments
+                   </span>
+                  )}
+                </div>
+              )}
+            </div> : '' 
           }
           <div className='text-black block pb-2'>
             <p className='font-semibold'>{post.title}</p>
@@ -467,7 +470,7 @@ const handleLikedUsersPopup =() => {
           isLikesEnabled = {isLikesEnabled}
           manageComment = {manageComment}
           manageLikes = {manageLikes}
-          fetchposts = {fetchposts}
+          fetchPosts = {fetchPosts}
           commentsCount = {commentsCount}
           getCommentsCount = {getCommentsCount}
           />
@@ -478,12 +481,12 @@ const handleLikedUsersPopup =() => {
           {handleLikedUsersPopup} />
         )}
 
-        {sharePostModal && (
+        {/* {sharePostModal && (
           <SharePost onClick={handleSharePostModal} post= {post}/>
-        )}
+        )} */}
 
         {IsEditPostOpen && <EditPost handlePostEdit = {handlePostEdit}
-        postId = {currentPostId} userId = {usesId} fetchposts = {fetchposts} /> }
+        postId = {currentPostId} userId = {usesId} fetchPosts = {fetchPosts} /> }
 
         {reportModal && <ReportModal closeModal = {handleReportModal}
       postId = {post._id} userId = {userId} /> }
