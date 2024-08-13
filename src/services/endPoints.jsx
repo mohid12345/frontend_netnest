@@ -1,3 +1,5 @@
+import { getExplorePosts, handleComment } from "./user/apiMethods"
+
 export const userUrls = {
     register: "/register",
     registerOtp: "/verifyOTP",
@@ -9,6 +11,10 @@ export const userUrls = {
     googleAuth: "/google-auth",
     getUserDetails: "/user-details",
     editProfile: "/edit-profile",
+    changePassword: "/change-password",
+    userSuggestions: "/user-suggestions",
+    getAllUsers: "/get-users",
+    switchToPrivate: "/switch-to-private"
   
   }
   export const postUrls = {
@@ -17,8 +23,30 @@ export const userUrls = {
     getEditPost: "/post/get-edit-post",
     addPost: "/post/add-post",
     editPost: "/post/edit-post",
-    // deletePost: "/post/delete-post",
+    deletePost: "/post/delete-post",
+    savePost: "post/save-post",
+    getSavedPosts: "post/user-saved-post",
+    reportPost: "/post/report-post",
+    likePost: "/post/like-post",
+    getAllPostComments: "/post/get-post-comments",
+    addComment: "/post/add-comment",
+    replyComment: "/post/reply-comment",
+    deleteComment: "/post/delete-post-comment",
+    deleteReplyComment: "/post/delete-post-replyComment",
+    commentCount: "/post/get-comments-count",
+    handleComment: "/post/handle-comment",
+    handleLike: "/post/handle-like",
+    getExplorePosts: "/post/get-explore-post"
 
+  }
+
+  export const connectionUrls = {
+    getConnections: "/connections/get-connection",
+    follow: "/connection/follow",
+    unfollow: "/connection/unFollow",
+    acceptRequest: "/connection/accept-request",
+    rejectRequest: "/connection/reject-request",
+    requestedUsers: "/connection/get-requested-users"
   }
   
   

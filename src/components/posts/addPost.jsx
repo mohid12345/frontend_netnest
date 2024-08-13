@@ -62,6 +62,8 @@ function AddPost({ closeAddPost }) {
           resetState();
           setLoading(!loading)
           handleCancelClick();
+
+          
         } else {
           toast.error(response.data.message);
         }

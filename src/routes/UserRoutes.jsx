@@ -9,6 +9,7 @@ import ForgotOtp from "../pages/otpPage/forgotOtp"
 import ForgotPassword from "../pages/forgotPassword/forgotPassword"
 import RenewPassword from "../pages/forgotPassword/renewPassword";
 import Profile from "../pages/profile/Profile"
+import Explore from "../pages/explore/Explore";
 // import UserProfile from "../pages/userProfile/UserProfile"
 import {adminLoginRouter, adminRouter} from "./adminRouter"
 
@@ -28,7 +29,11 @@ const appRouter = createBrowserRouter([
             ,{
                 path: '/profile',
                 element: <Profile/>
-            }
+            },
+            {
+              path: "/explore",
+              element: <Explore />
+            },
 
         ]
     },

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import {logout} from '../../utils/context/reducers/authSlice'
-// import { getUserSuggestions } from '../../services/user/apiMethods'
+import { followUser, getUserSuggestions } from '../../services/user/apiMethods'
 import { ArrowBigDownDash, UserRoundPlus } from 'lucide-react'
+import { toast } from 'sonner'
+
+import UserSuggestionsSkeleton from '../loader/UserSuggestionsSkeleton'
+
 
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import useDarkSide from "../../utils/hooks/useDarkSide";
@@ -15,6 +19,7 @@ function MiniProfile() {
     const user = useSelector(selectedUser)
     const userId = user._id
     const [users, setUsers] = useState([])  
+    const [userLoading, setUserLoading ] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -48,6 +53,38 @@ function MiniProfile() {
     //             console.log(error.message)
     //         })
     // },[])
+
+    const fetchUserSuggestions = () => {
+        setUserLoading(true)
+        getUserSuggestions({ userId })
+          .then((response) => {
+            const suggestions = Array.isArray(response.data.suggestedUsers) ? response.data.suggestedUsers : [];
+            setUsers(suggestions);
+            setUserLoading(false)
+          })
+          .catch((error) => {
+            console.log(error.message);
+            toast.error("Failed to fetch user suggestions");
+            setUserLoading(false)
+          });
+      };
+    
+      useEffect(() => {
+        fetchUserSuggestions();
+      }, []);
+    
+      const handleFollow = (suggestedUserId) => {
+        followUser({ userId, followingUser: suggestedUserId })
+          .then((response) => {
+            fetchUserSuggestions();
+            toast.success("Followed successfully");
+          })
+          .catch((error) => {
+              console.log(error.message);
+              toast.error("Failed to follow user");
+          });
+          // fetchposts();
+      };
     
     return (
 
@@ -60,7 +97,7 @@ function MiniProfile() {
                 <div className="flex flex-col items-center pb-6">
                     <img src={user.profileImg} className='w-24 h-24 mb-3 rounded-full shadow-lg' alt="" />
                     <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{user.userName}</h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">{user.name}</span>
                 
                     <div className="flex mt-4 md:mt-6">
                         <Link to={'/profile'} className=''>
@@ -140,42 +177,56 @@ function MiniProfile() {
 
             {/* suggustions */}
 
-            <div className="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-black dark:border-gray-700">
-                <div className="flex items-center justify-between mb-4">
-                    <h5 className="text-md font-semibold leading-none text-gray-700 dark:text-white">Suggested for you</h5>
-                    <span className="text-sm font-normal text-gray-700 hover:underline dark:text-blue-500 mr-1">
-                        <ArrowBigDownDash/>
-                    </span>
-                </div>
-                {users.map((suggestedUsers) => (
-                    <div className="flow-root">
-                        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-                            <li className="py-3 sm:py-2">
-                                <div className="flex items-center justify-between gap-3">
-                                    <div className='flex'>
-                                        <div className="flex-shrink-0">
-                                            <img className="w-11 h-11 rounded-full bg-black" src={suggestedUsers.profileImg} alt="" />
-                                        </div>
-                                        <div className="flex-1 min-w-0 ml-2 text-center flex items-center mb-1">
-                                            <div className='flex flex-col justify-start text-start'>
-                                                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                    {suggestedUsers.userName}
-                                                </p>
-                                                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                                    {suggestedUsers.name}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="inline-flex items-center text-base font-semibold text-black cursor-pointer dark:text-white text-center mb-1">
-                                        <UserRoundPlus className='rounded-full p-1 size-8  hover:text-blue-700 hover:bg-slate-200'/>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                ))}
+            {userLoading ? (
+          <UserSuggestionsSkeleton />
+        ): (
+          <div className="w-full max-w-md rounded-md border-none shadow-md bg-white border sm:p-8 dark:bg-black dark:border-gray-700 dark:shadow-gray-500">
+            <div className="flex items-center justify-between mb-4">
+              <h5 className="text-md font-semibold leading-none text-gray-700 dark:text-white">Suggested for you</h5>
+              <span className="text-sm font-normal text-gray-600 hover:underline dark:text-blue-500 mr-1">
+                <ArrowBigDownDash />
+              </span>
             </div>
+            {users.length > 0 ? (
+              users.map((suggestedUser) => (
+                <div key={suggestedUser._id} className="flow-root">
+                  <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+                    <li className="py-3 sm:py-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <Link 
+                          to={user._id === suggestedUser._id ? "/profile" : `/user-profile/${suggestedUser._id}`}
+                          className="flex"
+                        >
+                          <div className="flex-shrink-0">
+                            <img className="w-11 h-11 rounded-full bg-black" src={suggestedUser.profileImg} alt="" />
+                          </div>
+                          <div className="flex-1 min-w-0 ml-2 text-center flex items-center mb-1">
+                            <div className="flex flex-col justify-start text-start">
+                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                {suggestedUser.userName}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {suggestedUser.name}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                        <div
+                          onClick={() => handleFollow(suggestedUser._id)}
+                          className="inline-flex items-center text-base font-semibold text-black cursor-pointer dark:text-white text-center mb-1"
+                        >
+                          <UserRoundPlus className="rounded-full p-1 size-8 hover:text-blue-700 hover:bg-slate-200" />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 dark:text-gray-400">No suggestions available</p>
+            )}
+          </div>
+        )}
         </div>
     )
 }

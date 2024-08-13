@@ -8,71 +8,78 @@ import Header from '../../components/header/header'
 import { toast } from 'sonner'
 import Loader from '../../components/loader/loader'
 import HomePostLoader from '../../components/loader/HomePostLoader'
+import emptypost from '../../../public/images/userNoPost.jpg'
   
 
 function HomePage() {
   const selectedUser = (state) => state.auth.user;
-  console.log("ccd 1:", selectedUser);
   const user = useSelector(selectedUser);
-  console.log("ccd 2:", user);
   const userId = user._id || "";
+  // console.log('userId log :', userId);
+  
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
-      fetchposts();
+      fetchPosts();
     } catch (error) {
       console.log(error);
     }
   }, []);
 
-  const fetchposts = () => {
+  const fetchPosts = () => {
     setLoading(true);
     getAllPosts({ userId: userId })
       .then((response) => {
         const postDatas = response.data;
-        setPosts(postDatas);
+        console.log('my psot data 00:', postDatas);
+        if (postDatas && Array.isArray(postDatas)) {
+          setPosts(postDatas);
+        } else {
+          console.log('postDatas is not populated as expected.');
+        }
       })
+      // console.log('my psot data 00:', posts);
       .catch((error) => {
         toast.error(error.message);
       })
       .finally(() => {
-        // Set loading to false after 2 seconds
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000); // Adjust the time as needed
+        setLoading(false);
       });
   };
 
   return (
     <>
-      {/* <div className="flex justify-between w-full"> */}
-        
+      <div className="flex flex-col mr-2 lg:ml-10" style={{width:'870px'}}>
+        <div className="p-2 rounded-md bg-white dark:bg-black">
+          <Header />
+        </div>
 
-        <div className="flex flex-col mr-2 lg:ml-5" style={{width:'870px'}}>
-          <div className="p-1 rounded-md  bg-white dark:bg-slate-700">
-            <Header />
+        {loading ? (
+          <div className="flex lg:px-10 justify-center items-center mt-4 w-full h-auto">
+            <HomePostLoader />
           </div>
-           <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-slate-700">
-            {posts.map((post) => {
-              // console.log("post in inside home", post);
-              return (
-                <div>
-                  {loading && <HomePostLoader/> }
-                  {!loading && 
-                    <HomePosts key={post._id} post={post} fetchposts={fetchposts} />
-                  }
-                </div>
-              )
-            })}
-          </div> 
-        </div>
-       
-      {/* </div> */}
-        <div className="hidden lg:flex fixed right-0">
-          <MiniProfile />
-        </div>
+        ) : (
+          <>
+            {posts.length === 0 ? (
+              <div className='flex flex-col justify-center items-center mt-4 text-black w-full h-auto'>
+                <img className='w-96' src={emptypost} alt="No posts" />
+                <p className='text-gray-500'>Build your connections and share your moments.</p>
+              </div>
+            ) : (
+              <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
+                {posts.map((post) => (
+                  <HomePosts key={post._id} post={post} fetchPosts={fetchPosts} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <div className="hidden lg:flex fixed right-0">
+        <MiniProfile />
+      </div>
     </>
   );
 }
