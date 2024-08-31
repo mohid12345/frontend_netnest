@@ -38,7 +38,7 @@ export const apiCall = async(method, url, data) => {
           store.dispatch(logout(null))
           return
         }
-        console.log( "error in apical",error.response); 
+        console.log( "error in api call",error.response); 
         reject(error?.response?.data);
       }
     } catch (error) {

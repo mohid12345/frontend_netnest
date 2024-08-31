@@ -15,7 +15,6 @@ export const userUrls = {
     userSuggestions: "/user-suggestions",
     getAllUsers: "/get-users",
     switchToPrivate: "/switch-to-private",
-  
   }
   export const postUrls = {
     getUserPosts: "/post/get-user-post",
@@ -37,8 +36,6 @@ export const userUrls = {
     handleComment: "/post/handle-comment",
     handleLike: "/post/handle-like",
     getExplorePost: "/post/get-explore-post"
-    
-
   }
 
   export const connectionUrls = {

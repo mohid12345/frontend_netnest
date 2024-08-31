@@ -32,13 +32,13 @@ function HomePosts({post, fetchPosts}) {
   const imageUrlArray = post.imgUrl; 
   const postDate = formatDistanceToNow(new Date(post.date), { addSuffix: true });
   const postUserId = post.userId; 
-  console.log('dat 1',postUserId);
+  // console.log('dat 1',postUserId);
   
   const profileImg = postUserId.profileImg; 
-  console.log('dat 22 :',profileImg);
+  // console.log('dat 22 :',profileImg);
   
   const userName = postUserId.userName;
-  console.log('dat 33 :',userName );
+  // console.log('dat 33 :',userName );
   
 
   // navigate to user profile

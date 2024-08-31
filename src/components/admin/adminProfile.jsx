@@ -50,10 +50,10 @@ function AdminProfile() {
               </div>
               <div className='flex flex-col lg:ml-6'>
                 <div className='flex lg:ml-0 justify-between items-center'>
-                  <div className='flex items-center px-2'>
+                  {/* <div className='flex items-center px-2'>
                     <button 
                     className='lg:bg-black lg:text-white lg:h-10 lg:w-28 py-2 px-4 rounded  '>Edit Profile</button>
-                  </div>
+                  </div> */}
                   <div className='flex items-center px-4'>
                     <button 
                     onClick={handleLogout}

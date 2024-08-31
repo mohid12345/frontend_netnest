@@ -11,6 +11,7 @@ function UserProfile() {
   const [connections, setConnections] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
+  
 
   useEffect(() => {
     setLoading(true)
@@ -35,6 +36,8 @@ function UserProfile() {
       });
       
   },[])
+  console.log('connectiond @front userProfile :', connections);
+  
 
   return (
     <div className='w-full mr-2'>

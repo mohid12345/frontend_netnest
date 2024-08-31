@@ -4,67 +4,69 @@ import Login from "../pages/login/login";
 import App from "../App";
 import HomePage from "../pages/userHomePage/HomePage";
 import Signup from "../pages/signup/Signup";
-import Otp from "../pages/otpPage/otp"
-import ForgotOtp from "../pages/otpPage/forgotOtp"
-import ForgotPassword from "../pages/forgotPassword/forgotPassword"
+import Otp from "../pages/otpPage/otp";
+import ForgotOtp from "../pages/otpPage/forgotOtp";
+import ForgotPassword from "../pages/forgotPassword/forgotPassword";
 import RenewPassword from "../pages/forgotPassword/renewPassword";
-import Profile from "../pages/profile/Profile"
+import Profile from "../pages/profile/Profile";
 import Explore from "../pages/explore/Explore";
-// import UserProfile from "../pages/userProfile/UserProfile"
-import {adminLoginRouter, adminRouter} from "./adminRouter"
+import { adminLoginRouter, adminRouter } from "./adminRouter";
+import UserEditProfile from "../components/profile/UserEditProfile";
+import UserProfile from "../pages/userProfile/UserProfile"
 
 const appRouter = createBrowserRouter([
-    {
+  {
+    path: "/",
+    element: (
+      <Protect>
+        <App />
+      </Protect>
+    ),
+    children: [
+      {
         path: "/",
-        element: (
-            <Protect>
-            <App/>
-            </Protect>
-        ),
-        children:[
-            {
-                path: "/",
-                element: <HomePage/>
-            }
-            ,{
-                path: '/profile',
-                element: <Profile/>
-            },
-            {
-              path: "/explore",
-              element: <Explore />
-            },
+        element: <HomePage />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/explore",
+        element: <Explore />,
+      },
+      {
+        path: "/user-profile/:userId",
+        element: <UserProfile />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+  {
+    path: "/otp",
+    element: <Otp />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/forgot-otp",
+    element: <ForgotOtp />,
+  },
+  {
+    path: "/renew-password",
+    element: <RenewPassword />,
+  },
+  adminLoginRouter,
+  adminRouter,
+]);
 
-        ]
-    },
-    {
-        path: "/login",
-        element: (
-            <Login />
-        )
-    }, 
-    {
-        path: "/signup",
-        element: <Signup />,
-    },
-    {
-        path: "/otp",
-        element: <Otp/>
-    },
-    {
-        path: "/forgot-password",
-        element: <ForgotPassword/>
-    },
-    {
-        path: "/forgot-otp",
-        element: <ForgotOtp/>
-    },
-    {
-        path: "/renew-password",
-        element: <RenewPassword/>
-    },
-    adminLoginRouter,
-    adminRouter
-])
-
-export default appRouter
+export default appRouter;

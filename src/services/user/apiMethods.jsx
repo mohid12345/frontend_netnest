@@ -279,7 +279,7 @@ export const changePassword = (values)=> {
 //get user suggestion to miniprofile
 export const getUserSuggestions = (userId) => {
   return new Promise((resolve, reject) => {
-   try {
+   try {    
     apiCall("post", userUrls.userSuggestions, userId)
     .then((response) => {
       resolve(response)
@@ -315,7 +315,7 @@ export const getUserSearch = (searchQuery) => {
 export const getUserDetails = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("getuserdetails", userId);
+      // console.log("getuserdetails @api :", userId);
       apiCall("get", userUrls.getUserDetails+`/${userId}`)
         .then((response) => {
           resolve(response)
