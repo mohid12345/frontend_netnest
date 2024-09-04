@@ -13,6 +13,11 @@ export const userUrls = {
     editProfile: "/edit-profile",
     changePassword: "/change-password",
     userSuggestions: "/user-suggestions",
+    userSearch: "/user-search",
+    getNotifications: "/get-notifications",
+    verifyOtpEmail: "/verifyOTP-forEmail",
+    verifyEmailUpdate: "/verifyEmail-forEmail",
+    deleteAccount: "/delete-account",
     getAllUsers: "/get-users",
     switchToPrivate: "/switch-to-private",
   }
@@ -39,14 +44,25 @@ export const userUrls = {
   }
 
   export const connectionUrls = {
-    getConnections: "/connections/get-connection",
+    getConnections: "/connection/get-connection",
     follow: "/connection/follow",
     unfollow: "/connection/unFollow",
     acceptRequest: "/connection/accept-request",
     rejectRequest: "/connection/reject-request",
     requestedUsers: "/connection/get-requested-users"
   }
-  
+
+  export const chatUrls = {
+    getEligibleUsers: "/chat/chat-eligible-users",
+    addConversation: "/chat/add-conversation",
+    getUserConversation: "/chat/get-conversations",
+    findConversation: "/chat/find-conversation",
+    addMessage: "/chat/add-message",
+    getMessages: "/chat/get-messages",
+    lastMessages: "/chat/get-last-messages",
+    setMessageRead: "/chat/set-message-read",
+    getUnreadMessages:'/chat/get-unread-messages',
+  }
   
 
   export const adminUrls = {

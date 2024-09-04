@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "net": "concurrently \"npm run dev --prefix frontend_netnest\" \"npm run dev --prefix backend_netnest\""
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -27,13 +30,15 @@
     "lucide-react": "^0.378.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-easy-crop": "^5.0.7",
+    "react-easy-crop": "^5.0.8",
+    "react-image-crop": "^11.0.6",
     "react-redux": "^9.1.1",
     "react-router-dom": "^6.23.0",
     "react-toggle-dark-mode": "^1.1.1",
     "react-transition-group": "^4.4.5",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "socket.io-client": "^4.7.5",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
     "yup": "^1.4.0"
@@ -43,6 +48,7 @@
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",

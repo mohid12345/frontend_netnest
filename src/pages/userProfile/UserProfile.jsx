@@ -11,10 +11,13 @@ function UserProfile() {
   const [connections, setConnections] = useState(null);
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
+
+  
+  
   
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true)    
     getUserDetails(userId)
       .then((response) => {
         setUser(response.data.user)
@@ -25,7 +28,11 @@ function UserProfile() {
       })
     getUserPost(userId) 
       .then((response) => {
+        console.log(response);
+        
         const postsData = response.data;
+        // console.log('postdata :', postsData);
+        
         setPosts(postsData);
       })
       .catch((error) => {
@@ -36,7 +43,8 @@ function UserProfile() {
       });
       
   },[])
-  console.log('connectiond @front userProfile :', connections);
+
+  // console.log('connectiond @front userProfile :', connections);
   
 
   return (

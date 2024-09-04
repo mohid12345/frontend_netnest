@@ -13,6 +13,9 @@ import Explore from "../pages/explore/Explore";
 import { adminLoginRouter, adminRouter } from "./adminRouter";
 import UserEditProfile from "../components/profile/UserEditProfile";
 import UserProfile from "../pages/userProfile/UserProfile"
+import More from "../components/more/More";
+import Notifications from "../components/notification/Notifications"
+
 
 const appRouter = createBrowserRouter([
   {
@@ -39,8 +42,25 @@ const appRouter = createBrowserRouter([
         path: "/user-profile/:userId",
         element: <UserProfile />,
       },
+      {
+        path: "/more",
+        element: <More />
+      },
+      {
+        path: "/notifications",
+        // element: <Notification/>
+        element: <Notifications />
+      }
     ],
   },
+  // {
+  //   path: "/chat",
+  //   element: (
+  //     <Protect>
+  //       <Chat/>,
+  //     </Protect>
+  //   ),
+  // },
   {
     path: "/login",
     element: <Login />,

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AddPost from '../posts/addPost';
 import logoImg from "/images/logoNet.png"
+import CreatePost from '../posts/CreatePost'
 
   
 function SideNavBar() {
@@ -16,21 +17,16 @@ function SideNavBar() {
     setIsSidebarOpen(false);
   };
 
-  // add post
-  const [isAddPostOpen, setIsAddPostOpen] = useState(false);
-  const openAddPostModal = () => {
-    setIsAddPostOpen(true);
-    closeSidebar()
-  };
-  const closeAddPostModal = () => {
-    setIsAddPostOpen(false);
-  };
-  
-  const handleClose = () => {
-    closeSidebar()
-    closeSearchbar()
-    closeNotification()
-  }
+   // add post
+   const [isAddPostOpen, setIsAddPostOpen] = useState(false);
+   const openAddPostModal = () => {
+     setIsAddPostOpen(true);
+     closeSidebar()
+   };
+   const closeAddPostModal = () => {
+     setIsAddPostOpen(false);
+   };
+
  
   // search bar
   const [isSearchbarOpen, setSearchbarOpen] = useState(false)
@@ -39,6 +35,37 @@ function SideNavBar() {
     closeSidebar()
     closeNotification()
   }
+  const closeSearchbar = () => {
+    setSearchbarOpen(false)
+  }
+  const handleClose = () => {
+    closeSidebar()
+    closeSearchbar()
+    closeNotification()
+  }
+
+  //notifications
+
+const [isNotificationOpen, setNotificationOpen] = useState(false)
+const openNotification = () => {
+  setNotificationOpen(true)
+  closeSidebar()
+  closeSearchbar()
+}
+const closeNotification = () => {
+  setNotificationOpen(false)
+}
+
+  // settings
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const openSettingsModal = () => {
+    setIsSettingsOpen(true);
+    handleClose()
+    // closeSidebar()
+  };
+  const closeSettingsModal = () => {
+    setIsSettingsOpen(false);
+  };
    return (
     <div className="sm:w-0 md:w-4/12 max-w-72 block justify-end sm:p-0 md:p-2">
       <button
@@ -125,6 +152,7 @@ function SideNavBar() {
                 <li>
                     <Link
                     to={"/chat" }
+                    onClick={handleClose}
                     className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                       <svg className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
@@ -180,7 +208,7 @@ function SideNavBar() {
                     <span className="ms-3 text-lg">Create</span>
                   </div>
                 </li>
-                {isAddPostOpen && {handleClose  } && <AddPost closeAddPost={closeAddPostModal} />}
+                {isAddPostOpen && {handleClose  } && <CreatePost closeAddPost={closeAddPostModal} />}
                </ul>
               <ul className="pt-4 mt-4 space-y-0 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>
@@ -216,7 +244,37 @@ function SideNavBar() {
                     <span className="ms-3 text-lg">Settings</span>
                   </div>
                 </li>
-               </ul>
+                
+                { isSettingsOpen && <Settings onClose={closeSettingsModal} /> }
+                <li>
+                  <Link
+                    to={'/more'}
+                    onClick={handleClose}
+                    className={`flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer
+                    ${location.pathname === '/more' 
+                    ? "bg-gray-100 dark:bg-gray-700 "
+                    : "text-gray-800"
+                    }
+                    `}
+                  >
+                    <svg
+                      className={`flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
+                      ${location.pathname === '/more' 
+                      ? "text-gray-900"
+                      : "text-gray-500"
+                      }
+                      `}
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 22 22"
+                    >
+                      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+                    </svg>
+                    <span className="ms-3 text-lg">More</span>
+                  </Link>
+                </li>
+              </ul>
           </div>
         </aside>
       </div>

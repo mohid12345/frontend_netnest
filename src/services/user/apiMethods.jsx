@@ -130,6 +130,58 @@ export const renewPassword = (userData) => {
 }
 
 
+export const verifyEmailUpdate = (values) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post',userUrls.verifyEmailUpdate, values)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// verifyOTP for emal
+
+export const verifyOTPForEmail = (otp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.verifyOtpEmail, otp)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// delete account
+export const deleteAccount = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.deleteAccount, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+
 
 // google authentication
 
@@ -168,41 +220,43 @@ export const addPost = (postData) => {
   })
 }
 
-//get user post
+// get user post
 export const getUserPost = (userId) => {
-  return new Promise((resolve, reject) =>{
+  return new Promise((resolve, reject) => {
     try {
-      console.log("in userpost api call");
+      console.log("in userpost apicall");
       const url = `${postUrls.getUserPosts}/${userId}`
       apiCall("get", url, null)
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
+        .then((response) => {
+          console.log('getuorporot :', response);
+          
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     } catch (error) {
       resolve({status: 500, message: "Something wrong"})
     }
   })
 }
 
-//get all posts
+// get all posts
 export const getAllPosts = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      // console.log("userid in getallpost",userId);
-      apiCall("post", postUrls.getAllPosts,userId)
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-  } catch (error) {
-    resolve({status: 500, message: "Something wrong"})
-  }
-})
+      console.log("userid in getallpost",userId);
+      apiCall("post", postUrls.getAllPosts, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
 }
 // get all posts
 export const getEditPost = (postId) => {
@@ -315,9 +369,11 @@ export const getUserSearch = (searchQuery) => {
 export const getUserDetails = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      // console.log("getuserdetails @api :", userId);
+      console.log("getuserdetails @api :", userId);
       apiCall("get", userUrls.getUserDetails+`/${userId}`)
         .then((response) => {
+          console.log('getuesrdeatail :', response);
+          
           resolve(response)
         })
         .catch((err) => {
@@ -335,7 +391,7 @@ export const getUserConnection = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       // console.log("userid in getting cnnt", userId);
-      apiCall("post", connectionUrls.getConnection, userId)
+      apiCall("post", connectionUrls.getConnections, userId)
         .then((response) => {
           resolve(response)
         })
@@ -370,7 +426,7 @@ export const followUser = (data) => {
 export const unFollowUser = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("post", connectionUrls.unFollow, data)
+      apiCall("post", connectionUrls.unfollow, data)
         .then((response) => {
           resolve(response)
         })
@@ -614,7 +670,7 @@ export const deleteReplyComment = (commentData) => {
 export const getCommentsCount = (postId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${postUrls.commentsCount}/${postId}`
+      const url = `${postUrls.commentCount}/${postId}`
       apiCall("get", url, null)
         .then((response) => {
           resolve(response)
@@ -647,10 +703,10 @@ export const handleComment = (postData) => {
 
 //manage like
 export const handleLike = (postDate) => {
-  console.log(("inlike", postData));
+  console.log(("inlike", postDate));
   return new Promise((resolve, reject) => {
     try{
-      apiCall("post", postUrls.handleLike, postData)
+      apiCall("post", postUrls.handleLike, postDate)
       .then((response) =>{
         resolve(response)
       })
@@ -744,3 +800,4 @@ export const switchAccountPrivate = (userId) => {
     }
   })
 }
+

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { followUser, unFollowUser, getUserConnection, rejectFollowRequest } from '../../services/user/apiMethods';
 import PostGallery from '../profile/postGallery';
-import emptypost from '/images/userNoPost.jpg'
+import emptypost from '../../../public/images/userNoPost.jpg'
 import { useSelector } from 'react-redux';
 import FollowersList from '../profile/FollowersList';
 import FollowingList from '../profile/FollowingList';

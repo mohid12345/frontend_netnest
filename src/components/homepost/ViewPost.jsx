@@ -681,24 +681,26 @@ function ViewPost({
                       </div>
                     )}
                   </div>
-                 
+                 {/* <span>{likeCount}</span>
+                 <span>{commentsCount}</span> */}
                   <div className='flex'>
-                    {!isLikesEnabled && (
-                      <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600 '>
+                    {/* {!isLikesEnabled && ( */}
+                      {/* <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600 '>
                         likes are hidden
-                      </span>
-                    )}
-                    {isLikesEnabled && (
+                      </span> */}
+                    {/* )} */}
+                    {/* {isLikesEnabled && ( */}
                       <span onClick={handleLikedUsersPopup} className='font-semibold cursor-pointer ml-2 py-0'>
                       {likeCount} likes
                     </span>
-                    )}
-                    {/* {commentsCount > 0 && (
+                    {/* )} */}
+                    {commentsCount > 0 && (
                       <span className='font-semibold cursor-pointer ml-2 text-gray-700 hover:text-black'>
                       & {commentsCount} comments
                     </span>
-                    )} */}
+                    )}
                   </div>
+
 
                   {replyComments && (
                     <Formik

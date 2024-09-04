@@ -38,7 +38,7 @@ function AddPost({ closeAddPost }) {
     validationSchema: validationSchema,
     onSubmit: async () => {
       setLoading(!loading)
-      const { title, images } = formik.values;
+      const { title, description, images } = formik.values;
       const imageUrls = [];
 
       for (const imageFile of images) {
@@ -56,12 +56,14 @@ function AddPost({ closeAddPost }) {
       }
 
       try {
-        const response = await addPost({ userId, imgUrl: imageUrls, title });
+        const response = await addPost({ userId, imgUrl: imageUrls, title, description });
         if (response.status === 200) {
           toast.info(response.data.message);
           resetState();
           setLoading(!loading)
           handleCancelClick();
+
+          
         } else {
           toast.error(response.data.message);
         }
@@ -83,7 +85,7 @@ function AddPost({ closeAddPost }) {
       <div className='flex justify-center items-center h-full'>
         <div className='dark:bg-black bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'>
           <div className='flex justify-between items-center'>
-            <h2 className='font-semibold text-xl text-gray-800 dark:text-white'>Add Post</h2>
+            <h2 className='font-semibold text-xl'>Add Post</h2>
             <button onClick={closeAddPost} className="text-white px-2 py-2 rounded">
               <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
@@ -134,7 +136,7 @@ function AddPost({ closeAddPost }) {
                 </div>
               )}
 
-              <div className="relative z-0 w-full mb-5 group mt-4">
+              <div className="relative z-0 w-full mb-5 group">
                 <input
                   value={formik.values.title}
                   onChange={formik.handleChange}
@@ -154,7 +156,7 @@ function AddPost({ closeAddPost }) {
                 )}
               </div>
 
-              {/* <div className="relative z-0 w-full mb-5 group">
+              <div className="relative z-0 w-full mb-5 group">
                 <input
                   value={formik.values.description}
                   onChange={formik.handleChange}
@@ -171,7 +173,7 @@ function AddPost({ closeAddPost }) {
                 {formik.touched.description && formik.errors.description && (
                   <p className="text-red-600 text-xs mb-4">{formik.errors.description}</p>
                 )}
-              </div> */}
+              </div>
 
               <button
                 type="submit"
