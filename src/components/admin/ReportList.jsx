@@ -109,6 +109,7 @@ const ReportList = () => {
                     <th scope="col" className="px-6 py-3">Title</th>
                     <th scope="col" className="px-6 py-3 text-center">Username</th>
                     <th scope="col" className="px-6 py-3 text-center">Likes</th>
+                    <th scope="col" className="px-6 py-3 text-center">Reason Type</th>
                     <th scope="col" className="px-6 py-3 text-center">Reason</th>
                     <th scope="col" className="px-6 py-3 text-center">State</th>
                     <th scope="col" className="px-6 py-3 text-center">Action</th>
@@ -126,6 +127,7 @@ const ReportList = () => {
                       <td className="px-6 py-4">{report.postId?.title || 'N/A'}</td>
                       <td className="px-6 py-4 text-center">{report?.postId?.userId?.userName || 'N/A'}</td>
                       <td className="px-6 py-4 text-center">{report?.postId?.likes?.length || 0}</td>
+                      <td className="px-6 py-4 text-center">{report.reasonType}</td>
                       <td className="px-6 py-4 text-center">{report.reason}</td>
                       <td className="px-6 py-4 text-center">{report.postId?.isBlocked ? 'Blocked' : 'Unblocked'}</td>
                       <td className="px-6 py-4 text-center">
