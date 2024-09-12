@@ -15,6 +15,9 @@ import UserEditProfile from "../components/profile/UserEditProfile";
 import UserProfile from "../pages/userProfile/UserProfile"
 import More from "../components/more/More";
 import Notifications from "../components/notification/Notifications"
+import Chat from "../pages/chat/Chat";
+import ProtectedVideoCall from "../components/chatComponent/ProtectedVideoCall";
+
 
 
 const appRouter = createBrowserRouter([
@@ -53,14 +56,18 @@ const appRouter = createBrowserRouter([
       }
     ],
   },
-  // {
-  //   path: "/chat",
-  //   element: (
-  //     <Protect>
-  //       <Chat/>,
-  //     </Protect>
-  //   ),
-  // },
+  {
+    path: "/chat",
+    element: (
+      <Protect>
+        <Chat/>,
+      </Protect>
+    ),
+  },
+  {
+    path: "/video-call/:roomId/:userId",
+    element: <ProtectedVideoCall />
+  },
   {
     path: "/login",
     element: <Login />,

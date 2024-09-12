@@ -1,8 +1,7 @@
 import { apiCall } from "./apiCalls";
-import { postUrls, userUrls, connectionUrls } from "../endPoints";
-import { api } from "./api";
+import { chatUrls, connectionUrls, postUrls, userUrls } from "../endPoints";
 
-//user registration
+// User Register
 
 export const postRegister = (userData) => {
   return new Promise((resolve, reject) => {
@@ -24,7 +23,6 @@ export const postRegister = (userData) => {
 export const postOTP = (otp) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("otp in postotp", otp);
       apiCall("post", userUrls.registerOtp, otp)
       .then((response) => {
         resolve(response)
@@ -110,7 +108,6 @@ export const forgotPassword = (email) => {
   })
 }
 
-
 // renew password
 
 export const renewPassword = (userData) => {
@@ -128,60 +125,6 @@ export const renewPassword = (userData) => {
     }
   })
 }
-
-
-export const verifyEmailUpdate = (values) => {
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall('post',userUrls.verifyEmailUpdate, values)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
-    }
-  })
-}
-
-// verifyOTP for emal
-
-export const verifyOTPForEmail = (otp) => {
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall('post', userUrls.verifyOtpEmail, otp)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
-    }
-  })
-}
-
-// delete account
-export const deleteAccount = (userId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      apiCall('post', userUrls.deleteAccount, userId)
-        .then((response) => {
-          resolve(response)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
-    }
-  })
-}
-
-
 
 // google authentication
 
@@ -202,10 +145,10 @@ export const googleAuthenticate = (userData) => {
   })
 }
 
-//Add new post
+// Add new post
 export const addPost = (postData) => {
   return new Promise((resolve, reject) => {
-    try{
+    try {
       console.log("Postdata in api", postData);
       apiCall("post", postUrls.addPost, postData)
       .then((response) => {
@@ -214,11 +157,11 @@ export const addPost = (postData) => {
       .catch((err) => {
         reject(err)
       })
-    } catch(error){
-      resolve({status: 500, message:"Something wrong"})
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
     }
   })
-}
+} 
 
 // get user post
 export const getUserPost = (userId) => {
@@ -228,8 +171,6 @@ export const getUserPost = (userId) => {
       const url = `${postUrls.getUserPosts}/${userId}`
       apiCall("get", url, null)
         .then((response) => {
-          console.log('getuorporot :', response);
-          
           resolve(response)
         })
         .catch((err) => {
@@ -245,7 +186,7 @@ export const getUserPost = (userId) => {
 export const getAllPosts = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("userid in getallpost",userId);
+      // console.log("userid in getallpost",userId);
       apiCall("post", postUrls.getAllPosts, userId)
         .then((response) => {
           resolve(response)
@@ -258,6 +199,7 @@ export const getAllPosts = (userId) => {
     }
   })
 }
+
 // get all posts
 export const getEditPost = (postId) => {
   return new Promise((resolve, reject) => {
@@ -276,7 +218,6 @@ export const getEditPost = (postId) => {
   })
 }
 
-
 // delete post
 export const deletePost = (postData) => {
   return new Promise((resolve, reject) => {
@@ -293,7 +234,6 @@ export const deletePost = (postData) => {
     }
   })
 }
-
 
 // user edit profile
 export const editProfile = (userData) => {
@@ -313,40 +253,40 @@ export const editProfile = (userData) => {
   })
 }
 
-//change password 
-export const changePassword = (values)=> {
+// change password
+export const changePassword = (values) => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("post", userUrls.changePassword, values)
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     } catch (error) {
       resolve({status: 500, message: "Something wrong"})
     }
   })
 }
 
-//get user suggestion to miniprofile
+
+// get user suggustions to miniprofile
 export const getUserSuggestions = (userId) => {
   return new Promise((resolve, reject) => {
-   try {    
-    apiCall("post", userUrls.userSuggestions, userId)
-    .then((response) => {
-      resolve(response)
-    })
-    .catch((err) => {
-      reject(err)
-    })
-} catch (error) {
-  resolve({status: 500, message: "Something wrong"})
+    try {
+      apiCall("post", userUrls.userSuggestions, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
 }
-})
-}
-
 
 export const getUserSearch = (searchQuery) => {
   return new Promise((resolve, reject) => {
@@ -364,16 +304,13 @@ export const getUserSearch = (searchQuery) => {
   })
 }
 
-
 // get user details
 export const getUserDetails = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("getuserdetails @api :", userId);
+      console.log("getuserdetails", userId);
       apiCall("get", userUrls.getUserDetails+`/${userId}`)
         .then((response) => {
-          console.log('getuesrdeatail :', response);
-          
           resolve(response)
         })
         .catch((err) => {
@@ -385,13 +322,12 @@ export const getUserDetails = (userId) => {
   })
 }
 
-
 // get user connections
 export const getUserConnection = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       // console.log("userid in getting cnnt", userId);
-      apiCall("post", connectionUrls.getConnections, userId)
+      apiCall("post", connectionUrls.getConnection, userId)
         .then((response) => {
           resolve(response)
         })
@@ -421,12 +357,11 @@ export const followUser = (data) => {
   })
 }
 
-
 // unfollow user
 export const unFollowUser = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("post", connectionUrls.unfollow, data)
+      apiCall("post", connectionUrls.unFollow, data)
         .then((response) => {
           resolve(response)
         })
@@ -630,7 +565,6 @@ export const replyComment = (commentData) => {
   })
 }
 
-
 // delete comment
 export const deleteComment = (commentId) => {
   return new Promise((resolve, reject) => {
@@ -648,8 +582,6 @@ export const deleteComment = (commentId) => {
   })
 }
 
-//delete reply  comment
-
 export const deleteReplyComment = (commentData) => {
   return new Promise((resolve, reject) => {
     try {
@@ -666,11 +598,10 @@ export const deleteReplyComment = (commentData) => {
   })
 }
 
-//get commetn count
 export const getCommentsCount = (postId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${postUrls.commentCount}/${postId}`
+      const url = `${postUrls.commentsCount}/${postId}`
       apiCall("get", url, null)
         .then((response) => {
           resolve(response)
@@ -682,7 +613,7 @@ export const getCommentsCount = (postId) => {
       resolve({ status: 500, message: "Somethings wrong." });
     }
   })
-} 
+}
 
 //  manage comment
 export const handleComment = (postData) => {
@@ -701,37 +632,106 @@ export const handleComment = (postData) => {
   })
 }
 
-//manage like
-export const handleLike = (postDate) => {
-  console.log(("inlike", postDate));
-  return new Promise((resolve, reject) => {
-    try{
-      apiCall("post", postUrls.handleLike, postDate)
-      .then((response) =>{
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-    } catch (error) {
-      resolve({status: 500, message:"Somenthings wrong."})
-    }
-  })
-}
-
-//get NOtifications
-export const getNotifications = (userId) => {
+// manage like
+export const handleLike = (postData) => {
+  console.log("inlike",postData);
   return new Promise((resolve, reject) => {
     try {
-      apiCall("post", userUrls.getNotifications, userId)
+      apiCall("post",postUrls.handleLike, postData)
       .then((response) => {
         resolve(response)
       })
       .catch((err) => {
         reject(err)
       })
-    } catch(error){
-      resolve({status: 500, message: "Somethigs wrong."})
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get notifications
+export const getNotifications = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", userUrls.getNotifications, userId)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const verifyEmailUpdate = (values) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post',userUrls.verifyEmailUpdate, values)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// verifyOTP for emal
+
+export const verifyOTPForEmail = (otp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.verifyOtpEmail, otp)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// verifyOTP for emal
+
+// export const verifyOTPForPswd = (otp) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       apiCall('post', userUrls.verifyOtpPswd, otp)
+//         .then((response) => {
+//           resolve(response)
+//         })
+//         .catch((err) => {
+//           reject(err)
+//         })
+//     } catch (error) {
+//       resolve({status: 500, message: "Something wrong"})
+//     }
+//   })
+// }
+
+// delete account
+export const deleteAccount = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall('post', userUrls.deleteAccount, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
     }
   })
 }
@@ -739,64 +739,207 @@ export const getNotifications = (userId) => {
 export const getExplorePosts = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("heluuu");
-      
+      // console.log("userid in getallpost",userId);
       apiCall("post", postUrls.getExplorePost, userId)
-      .then((response) =>{
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-    } catch(error){
-      resolve({status: 500, message: "Somentihg wrong"})
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
     }
   })
-} 
+}
 
 export const getAllUsers = (userId) => {
-  return new Promise((resolve, reject)=> {
+  return new Promise((resolve, reject) => {
     try {
+      // console.log("userid in getallpost",userId);
       apiCall("post", userUrls.getAllUsers, userId)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status: 500, message: "Something wrong"})
+    }
+  })
+}
+
+// get users for conversation
+export const getChatElibleUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.getEligibleUsers, userId)
       .then((response) => {
-        resolve(response)
+        resolve(response);
       })
       .catch((err) => {
-        reject(err)
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+export const addConversation = (conversationData) => {
+  // console.log("conversationData", conversationData);
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.addConversation, conversationData)
+      .then((response) => {
+        resolve(response);
       })
-    } catch (error){
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+//  get user conversation
+export const getUserConversations = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.getUserConversation}/${userId}`
+      apiCall("get", url, null)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// find conversation
+export const findConversation = (conversationData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.findConversation}/${conversationData.firstUser}/${conversationData.secondUser}`
+      apiCall("post", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
       resolve({status:500, message: "Something wrong"})
     }
   })
 }
 
-//get users for conversation 
-export const getChatElibleUsers = (userId) => {
-  return new Promise((resolve, reject) =>{
+// add new message
+export const addMessage = (formData) => {
+  return new Promise((resolve, reject) => {
     try {
-      apiCall("post", chatUrls.getEligibleUsers, userId)
-      .then((response) => {
-        resolve(response)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-    } catch(error) {
-      resolve({status: 500, message: "Somethings wrong"})
+      console.log("formdata in api", formData);
+      apiCall("post", chatUrls.addMessage, formData)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status:500, message: "Something wrong"})
     }
   })
 }
 
-//make account 
+// get user conversations
+export const getUserMessages = (conversationId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${chatUrls.getMessages}/${conversationId}`
+      apiCall("get", url, null)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({status:500, message: "Something wrong"})
+    }
+  })
+}
+
+// getlast messages
+export const getLastMessages = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", chatUrls.lastMessages, null)
+      .then((response) => {
+        resolve((response))
+     })
+     .catch((err) => {
+      reject(err)
+     })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// set message read
+export const setMessageRead = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("patch", chatUrls.setMessageRead, messageData)
+        .then((response) => {
+          resolve((response))
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// get unread messages
+export const getUnReadMessages = (messageData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("post", chatUrls.getUnreadMessages, messageData)
+        .then((response) => {
+          resolve((response))
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+// make account
 export const switchAccountPrivate = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       apiCall("patch", userUrls.switchToPrivate, userId)
-      .then((response) => {
-        resolve(response)
-      })
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
     } catch (error) {
-      resolve({ sttus: 500, message: "Something wrong"})
+      resolve({ status: 500, message: "Somethings wrong." });
     }
   })
 }

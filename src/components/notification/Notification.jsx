@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getNotifications } from '../../services/user/apiMethods'
+import { getNotifications } from '../../services/user/apiMethods1'
 import { formatDistanceToNow } from 'date-fns'
 import { Link, useNavigate } from 'react-router-dom'
 

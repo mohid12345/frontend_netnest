@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import  { addPost } from "../../services/user/apiMethods"
+import  { addPost } from "../../services/user/apiMethods1"
 import { useNavigate } from 'react-router-dom';
 import { initialValues, validationSchema } from '../../utils/validations/postValidation';
 import Loader from '../loader/loader';
