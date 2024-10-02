@@ -27,7 +27,7 @@ function HomePosts({ post, fetchPosts }) {
   const user = useSelector(selectedUser);
   const userId = user._id;
   const postIds = user.savedPost;
-  // console.log("post zz :", post);
+  // console.log("user zz :", userId);
   const [isSavedByUser, setIsSavedByUser] = useState(
     user?.savedPost?.includes(post._id)
   );
@@ -614,7 +614,7 @@ function HomePosts({ post, fetchPosts }) {
         <EditPost
           handlePostEdit={handlePostEdit}
           postId={currentPostId}
-          userId={usesId}
+          userId={userId}
           fetchPosts={fetchPosts}
         />
       )}

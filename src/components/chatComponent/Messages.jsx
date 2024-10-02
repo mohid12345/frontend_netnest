@@ -207,7 +207,7 @@ function Messages({
           </div>
         </div>
         <button 
-          onClick={handleVideoCall}
+          // onClick={handleVideoCall}
           className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
           <svg
             className="w-6 h-6 text-gray-600 fill-current"

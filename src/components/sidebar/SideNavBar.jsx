@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import AddPost from '../posts/addPost';
 import logoImg from "/images/logoNet.png"
 import CreatePost from '../posts/CreatePost'
+import Searchbar from '../searchbar/Searchbar'
 
   
 function SideNavBar() {

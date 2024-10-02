@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { toast } from "sonner";
 import { forgotPassword } from '../../services/user/apiMethods';
 
-function ForgotPassword() {
+function  ForgotPassword() {
   const navigate = useNavigate()
   const initialValues = {
     email: ""
