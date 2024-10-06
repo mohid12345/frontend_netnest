@@ -1,65 +1,67 @@
-import React, {useEffect, useState} from 'react'
-import * as Yup from "yup"
-import {editPost, getEditPost} from '../../services/user/apiMethods'
-import { useDispatch, useSelector } from 'react-redux'
-import { setPosts } from '../../utils/context/reducers/authSlice'
-import { toast } from 'sonner'
-import { useFormik } from 'formik'
+import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react'
+import * as Yup from "yup";
+import { editPost, getEditPost } from '../../services/user/apiMethods';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPosts } from '../../utils/context/reducers/authSlice';
+import { toast } from 'sonner';
 
-function EditPost({handlePostEdit, postId, userId,fetchPosts }) {
-    const dispatch = useDispatch()
-    const [post,setPost] = useState(null)
+function EditPost({handlePostEdit, postId, userId, fetchPosts}) {
+  const dispatch = useDispatch()
+  const [post, setPost] = useState(null);
+  
+  useEffect(() => {
+    getEditPost({ postId })
+      .then((response) => {
+        const post = response.data;
+        setPost(post); 
+        console.log('post datzz', post);
+        
+        formik.setValues({
+          title: post.title,
+          imgUrl: post.imgUrl || [],         
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [postId]);
 
-    useEffect(() => {
-        getEditPost({postId})
-        .then((response) => {
-            const post = response.data;
-            setPost(post)
-            Formik.setValues({
-                title: post.title,
-                imageUrl: post.imgUrl
-            })
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }, [postId])
-    
-    const resetState=()=> {
-        formik.values.title='';
+  const resetState=()=>{
+    formik.values.title='';
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      imgUrl: [],
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .trim() 
+        .required("Title is required")
+        .matches(/^\S+.*\S$/, "Title cannot contain only spaces"),
+    }),
+    onSubmit: async() => {
+      const {title} = formik.values;
+      console.log("come here..", postId, title);
+      editPost({ postId, userId, title  })
+       .then((response) => {
+        const PostData = response.data
+        dispatch(setPosts({posts: PostData.posts}))
+        toast.info("Post updated successfully");
+        resetState()
+        handlePostEdit()
+        fetchPosts()
+       })
+      .catch((error) => {
+        toast.error(error?.message);
+        console.log(error?.message);
+      })
     }
+  })
 
-    const formik = useFormik({
-        initialValues: {
-            title: '',
-        },
-        validationSchema: Yup.object({
-            title: Yup.string()
-            .trim()
-            .required("Title is required")
-            .match(/^\S+.*\S$/,"Title cannot contain only spaces"),
-        }),
-        onSubmit: async() => {
-            const {title} = formik.values;
-            console.log("from edit post :", postId,title );
-            editPost({postId, userId, title})
-            .then((response) => {
-                const PostData = response.data
-                dispatch(setPosts({posts: PostData.posts}))
-                toast.info("Post updated successfully")
-                resetState()
-                handlePostEdit()
-                fetchPosts()
-            })
-            .catch((error) => {
-                toast.error(error?.message)
-                console.log(error?.message);
-            })
-        }
-    })
-    
   return (
-    
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md'>
       <div className='flex justify-center items-center h-full '> 
         <div className='bg-white p-10 space-y-4 w-full md:mx-80 rounded-md'> 
@@ -77,9 +79,9 @@ function EditPost({handlePostEdit, postId, userId,fetchPosts }) {
           </div>
           <div className='max-w-md mx-auto'>
 
-          {post?.imgUrl && (
+          {post?.imgUrl[0] && (
               <div className="mb-4">
-                <img src={post.imgUrl} alt="Post Image" className="w-80 h-auto max-h-60 object-cover mx-auto rounded" />
+                <img src={post.imgUrl[0]} alt="Post Image" className="w-80 h-auto max-h-60 object-cover mx-auto rounded" />
               </div>
             )}
 

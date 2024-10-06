@@ -128,6 +128,10 @@ function HomePosts({ post, fetchPosts }) {
     }
   };
 
+  const handleDeletePost = (postId, userId) => {
+    openModal(postId);
+  };
+
   //edit post
   const [IsEditPostOpen, setEditPostOpen] = useState(false);
   const [currentPostId, setCurrentPostId] = useState(null);
@@ -232,13 +236,11 @@ function HomePosts({ post, fetchPosts }) {
 
   useEffect(() => {
     const postId = post._id;
-    getCommentsCount(postId)
-    .then((response) => {
-      setCommentsCount(response.data.commentCounts)
+    getCommentsCount(postId).then((response) => {
+      setCommentsCount(response.data.commentCounts);
       // console.log("comments_counts :", commentsCount);
-      
     });
-  },[]);
+  }, []);
 
   //truncated display of description
   const [isExpanded, setIsExpanded] = useState(false);
@@ -250,6 +252,20 @@ function HomePosts({ post, fetchPosts }) {
   const truncateText = (text, length) => {
     if (text.length <= length) return text;
     return text.substring(0, length) + "...";
+  };
+
+  //handle image rotation
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNextImage = () => {
+    const nextIndex = (currentIndex + 1) % imageUrlArray.length; // Handle rotation
+    setCurrentIndex(nextIndex);
+  };
+  const handlePrevImage = () => {
+    const prevIndex =
+      (currentIndex - 1 + imageUrlArray.length) % imageUrlArray.length; // Handle rotation
+    setCurrentIndex(prevIndex);
   };
 
   return (
@@ -366,6 +382,8 @@ function HomePosts({ post, fetchPosts }) {
           )}
         </div>
 
+        {/* //image showing */}
+
         <div
           onDoubleClick={() => toHandleLike(post._id, user._id)}
           className=" lg:p-4 sm:p-0"
@@ -380,13 +398,18 @@ function HomePosts({ post, fetchPosts }) {
                 className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                 data-carousel-item
               >
-                {imageUrlArray.map((imageUrl, index) => {
+                {/* {imageUrlArray.map((imageUrl, index) => {
                   return <img src={imageUrl} alt={`post ${index}`} />;
-                })}
+                })} */}
+                <img
+                  src={imageUrlArray[currentIndex]}
+                  alt={`post ${currentIndex}`}
+                />
               </div>
             </div>
 
             <button
+              onClick={handlePrevImage}
               type="button"
               className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
               data-carousel-prev
@@ -412,6 +435,7 @@ function HomePosts({ post, fetchPosts }) {
             </button>
             <button
               type="button"
+              onClick={handleNextImage}
               className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
               data-carousel-next
             >
@@ -440,7 +464,7 @@ function HomePosts({ post, fetchPosts }) {
         <div className="text-gray-200  flex justify-between">
           {/* like, comment, share */}
           <div className="py-1 mt-0 flex gap-3">
-           {likeCount}
+            {likeCount}
             <div className="group relative">
               <button
                 onClick={() => toHandleLike(post._id, user._id)}
@@ -453,7 +477,7 @@ function HomePosts({ post, fetchPosts }) {
                 )}
               </button>
             </div>
-           {commentsCount}
+            {commentsCount}
             <div className="group relative">
               <button
                 onClick={() => handlePostPopup()}
@@ -461,7 +485,6 @@ function HomePosts({ post, fetchPosts }) {
               >
                 <MessageCircle className="text-black hover:text-gray-600" />
               </button>
-              
             </div>
 
             {/* <div className='group relative'>

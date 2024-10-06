@@ -222,6 +222,8 @@ export const getEditPost = (postId) => {
 export const deletePost = (postData) => {
   return new Promise((resolve, reject) => {
     try {
+      console.log('delete api call :', postData);
+      
       apiCall("post", postUrls.deletePost, postData)
         .then((response) => {
           resolve(response)
