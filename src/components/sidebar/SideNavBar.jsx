@@ -180,6 +180,9 @@ const closeNotification = () => {
                     </a>
                 </li>
                 </Link>
+
+
+                
                 <li>
                 <Link 
                       to={'/notifications'}
@@ -199,6 +202,9 @@ const closeNotification = () => {
                       </svg> */}
                     </Link>
                     </li>
+
+
+
                 <li>
                   <div
                   onClick={openAddPostModal}

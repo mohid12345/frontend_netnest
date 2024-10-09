@@ -29,6 +29,7 @@
     "framer-motion": "^11.2.6",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.378.0",
+    "razorpay": "^2.9.4",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^2.2.0",
     "react-dom": "^18.2.0",
