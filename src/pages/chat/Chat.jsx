@@ -14,17 +14,18 @@ function Chat() {
 
   const selectUser = (state) => state.auth.user
   const user  = useSelector(selectUser)
-  const userId = user._id
+  const userId = user._id //get user id
   const socket = useRef()
   const navigate = useNavigate()
   const [conversations, setConversations] = useState([]);
-  const [currentChat, setCurrentChat] = useState(null);
-  console.log("current chat person",currentChat);
+  const [currentChat, setCurrentChat] = useState(null);//persons who are sepeaking( 2pple)
+  console.log("current chat persons",currentChat); //will show sender and receiver or the current two personnels
   const [messages, setMessages] = useState([])
   const [lastMessages, setLastMessages] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isGroup, setIsGroup] = useState(false);
   const [arrivalMessage, setArrivalMessage] = useState(null);
+
   const [joinVideoCall, setJoinVideoCall] = useState(false);
   const [videoCallJoinRoomId, setVideoCallJoinRoomId] = useState("");
   const [isSharePost, setSharePost] = useState(null)
@@ -33,12 +34,14 @@ function Chat() {
     profile: "",
   });
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const messageUserId = queryParams.get("userId");
-  console.log("messageUserId in chat", messageUserId);
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const messageUserId = queryParams.get("userId");
+  // console.log("messageUserId in chat", messageUserId);
 
-  const { shareUser, sharePost } = location.state || {};
+
+  //set convestions of two people
+  const { shareUser, sharePost } = location.state || {}; //sharuser is the receiver guy
   useEffect(() => {
     if(shareUser) {
       const userId = user._id
@@ -51,8 +54,8 @@ function Chat() {
           setConversations((prev) => [...prev, userData])
           console.log("");
         }
-        setCurrentChat(userData)
-        setSharePost(sharePost._id)
+        setCurrentChat(userData)//statae
+        setSharePost(sharePost._id)//for sharing post//state
       })
       .catch((error) => {
         console.log(error);
@@ -60,12 +63,14 @@ function Chat() {
     }
   },[shareUser])
 
+
+  //add conversation to db
   const { MessageThisUser } = location.state || {};
   useEffect(() => {
     if(MessageThisUser) {
       const userId = user._id
       const senderId = MessageThisUser._id
-      addConversation({senderId: userId, receiverId: senderId})
+      addConversation({senderId: userId, receiverId: senderId})//addConversation with two pple
       .then((response) => {
         const userData = response.data;
         const existChat = conversations.filter((conver) => conver._id === userData._id)
@@ -80,12 +85,15 @@ function Chat() {
       });
     }
   }, [MessageThisUser])
-    
+
+
+
+  //getmessage    
   useEffect(() => {
 
     socket.current = io(BASE_URL)
 
-    getUserConversations(userId)
+    getUserConversations(userId) 
       .then((response) => {
         setConversations(response.data)
       })
@@ -95,7 +103,7 @@ function Chat() {
         console.log("res for last msg", response.data);
         setLastMessages(response.data)
       })
-
+//listen to server to receive an message//and its not in message. its passed as props
     socket.current.on("getMessage", (data) => {
       const senderId = data.senderId
       console.log("get messag data", data);
@@ -115,14 +123,11 @@ function Chat() {
           console.log("arrivalMessage is",arrivalMessage);
         })
     })
-
-    // socket.current.on("getMessage", (data) => {
-    //   console.log("Received message:", data);
-    //   setArrivalMessage(data); 
-    // });
-
   }, [])
 
+
+
+//handling received message
   useEffect(() => {
     ( arrivalMessage && currentChat?.members.includes(arrivalMessage?.sender)) || 
     (currentChat?.members.find(
@@ -141,6 +146,10 @@ function Chat() {
     })
   },[user])
 
+
+
+
+//video call
   useEffect(() => {
     socket.current.on("videoCallResponse", (data) => {
       console.log("videoCallResponse",data);
@@ -158,6 +167,12 @@ function Chat() {
     navigate(`/video-call/${videoCallJoinRoomId}/${userId}`);
   };
 
+
+
+
+
+
+  
   return (
     <div className="relative flex w-full h-screen overflow-hidden antialiased bg-gray-200">
 
@@ -176,7 +191,7 @@ function Chat() {
       {currentChat && (
         <Messages 
           messages={messages}
-          setMessages={setMessages}
+          setMessages={setMessages} //passes the arrival message
           user={user}
           onlineUsers={onlineUsers}
           setCurrentChat={setCurrentChat}
@@ -195,7 +210,7 @@ function Chat() {
   </div>
 )}
 
-      {joinVideoCall && (
+      {joinVideoCall &&  (
         <VideoCallModal 
         show={joinVideoCall}
         onHide={() => setJoinVideoCall(false)}

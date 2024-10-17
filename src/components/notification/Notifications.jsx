@@ -4,6 +4,9 @@ import { getNotifications } from '../../services/user/apiMethods'
 import { formatDistanceToNow } from 'date-fns'
 import { Link, useNavigate } from 'react-router-dom'
 import FollowRequest from '../follow request/FollowRequest'
+import { io } from 'socket.io-client'
+import { BASE_URL } from '../../constants/baseUrls'
+
 
 function Notifications() {
 
@@ -12,6 +15,26 @@ function Notifications() {
   const userId = user._id || ""
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate()
+  const [socket, setSocket] = useState(null)
+
+  useEffect(() => {
+  //initilize socket.io connection 
+  const newSocket = io(BASE_URL)
+  setSocket(newSocket)
+
+  //join users room
+  newSocket.emit('join', userId)
+
+  newSocket.on('newNotification', (notification) => {
+    setNotifications(prevNotifications => [notification, ...prevNotifications])
+  })
+
+  //clean on conponnet unmount
+  return() =>{
+    newSocket.disconnect()
+  }
+},[userId])
+
 
   useEffect(() => {
     try {

@@ -1,27 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { addMessage, getUserMessages } from '../../services/user/apiMethods';
-import { toast } from 'sonner';
+import React, { useEffect, useRef, useState } from "react";
+import { addMessage, getUserMessages } from "../../services/user/apiMethods";
+import { toast } from "sonner";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import SendedChat from './SendedChat';
-import RecievedChat from './RecievedChat';
-import VoiceRecorder from './VoiceRecorder';
-import { Video } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import SendedChat from "./SendedChat";
+import RecievedChat from "./RecievedChat";
+import VoiceRecorder from "./VoiceRecorder";
+import { Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-function Messages({ 
-  user, 
-  currentChat, 
-  messages, 
-  setMessages, 
-  socket, 
-  shareUser, 
-  isSharePost, 
-  setSharePost, 
-  onlineUsers, 
-  setCurrentChat })
-{
-
+function Messages({
+  user,
+  currentChat,
+  messages,
+  setMessages,
+  socket,
+  shareUser,
+  isSharePost,
+  setSharePost,
+  onlineUsers,
+  setCurrentChat,
+}) {
   const [isOnline, setIsOnline] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [friend, setFriend] = useState(null);
@@ -29,34 +28,40 @@ function Messages({
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
-  const [isRecording, setIsRecording] = useState(false)
+  const [isRecording, setIsRecording] = useState(false);
   const scrollRef = useRef();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
+  console.log("currentchat members at :message ::::", currentChat);
+
+  //general
   useEffect(() => {
+    console.log("currentchat members at :message ::::", currentChat);
     const friend = currentChat?.members.find((m) => m._id !== user._id);
+    console.log("currentchat friend at :message ::::", friend);
     setFriend(friend);
     const currentChatId = currentChat?._id;
     setIsOnline(() => {
-      if(onlineUsers.find((user) => user.userId === friend._id)) {
-        return true 
+      if (onlineUsers.find((user) => user.userId === friend._id)) {
+        return true;
       } else {
-        return false
+        return false;
       }
-    })
-    getUserMessages(currentChatId)
-    .then((response) => {
-      setMessages(response.data)
+    });
+    getUserMessages(currentChatId).then((response) => {
+      setMessages(response.data);
       console.log("user messages", response.data);
-      })
+    });
   }, [currentChat, onlineUsers]);
 
+  //general 2
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
+  //for video call
   function randomID(len) {
     let result = "";
     if (result) return result;
@@ -70,9 +75,12 @@ function Messages({
     return result;
   }
 
-  const handleVideoCall = () => {
-    const roomId = randomID(10)
-    const receiverId = friend?._id
+  //handle video call
+  const handleVideoCall = () =>  {
+    const roomId = randomID(10);
+    const receiverId = friend?._id;
+    console.log("receive id at message :", receiverId);
+
     const emitData = {
       senderId: user._id,
       senderName: user.userName,
@@ -82,15 +90,21 @@ function Messages({
     };
     socket.current.emit("videoCallRequest", emitData);
     navigate(`/video-call/${roomId}/${user._id}`);
-  }
+  };
 
+  //main message submit to reciever
   const handleSubmit = (file) => {
     const formData = new FormData();
     const currentChatId = currentChat._id;
     const userId = user._id;
-    const receiver = currentChat.members.find((member) => member !== user._id);
+    console.log("userid :::", userId);
+
+    // const receiver = currentChat.members.find((member) => member !== user._id);
+    const receiver = currentChat?.members.find((m) => m._id !== user._id);
+    console.log("receiverdata :::", receiver);
+
     let messageType = "";
-  
+
     if (isSharePost) {
       console.log("share post id", isSharePost);
       messageType = "sharePost";
@@ -108,16 +122,19 @@ function Messages({
       }
       formData.append("file", file);
       // setNewMessage(messageType);
-    } else {
+    } else { 
       messageType = "text";
-      formData.append("text", newMessage); // Append the text message
+      formData.append("text", newMessage); 
     }
-  
+
     formData.append("conversationId", currentChatId);
     formData.append("sender", userId);
     formData.append("messageType", messageType);
-  
+
     const receiverId = receiver ? receiver._id : null;
+    console.log("receiver id :", receiverId);
+
+    //emit the message : this is emmited to server in backend
     socket.current.emit("sendMessage", {
       senderId: userId,
       receiverId,
@@ -126,7 +143,8 @@ function Messages({
       file: file?.name,
       sharedPost: isSharePost ? JSON.stringify(isSharePost) : null,
     });
-  
+
+    //add message to db
     addMessage(formData)
       .then((response) => {
         console.log("response after adding", response.data);
@@ -137,11 +155,14 @@ function Messages({
       .catch((error) => {
         console.error("Error sending message:", error);
       });
-      if(isSharePost) {
-        navigate('/')
-        setSharePost(null);
-      }
+    if (isSharePost) {
+      navigate("/");
+      setSharePost(null);
+    }
   };
+
+
+  //accessory invocation from form and file clicks
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && newMessage.trim()) {
@@ -150,37 +171,37 @@ function Messages({
   };
 
   const handleImageClick = () => {
-    const fileInput = document.getElementById("image")
-    if(fileInput) {
-      fileInput.click()
+    const fileInput = document.getElementById("image");
+    if (fileInput) {
+      fileInput.click();
     }
-  }
+  };
 
   const handleVideoClick = () => {
-    const fileInput = document.getElementById("video")
-    if(fileInput) {
-      fileInput.click()
+    const fileInput = document.getElementById("video");
+    if (fileInput) {
+      fileInput.click();
     }
-  }
+  };
 
   const addAudioFile = async (blob) => {
-    setIsRecording(false)
-    const url = URL.createObjectURL(blob)
-    const audio = document.createElement("audio")
-    audio.src = url
-    audio.controls = true
+    setIsRecording(false);
+    const url = URL.createObjectURL(blob);
+    const audio = document.createElement("audio");
+    audio.src = url;
+    audio.controls = true;
     document.body.appendChild(audio);
 
     const audioFile = new File([blob], `${Date.now()}%2Baudio.mp3`, {
       type: "audio/mpeg",
     });
-    handleSubmit(audioFile)
-  }
+    handleSubmit(audioFile);
+  };
 
   const cancelSharePost = () => {
-    setSharePost(null)
-    navigate('/')
-  }
+    setSharePost(null);
+    navigate("/");
+  };
 
   return (
     <div className="relative flex flex-col flex-1">
@@ -196,19 +217,16 @@ function Messages({
         </div>
         <div className="flex flex-col justify-center flex-1 overflow-hidden cursor-pointer">
           <div className="overflow-hidden text-base font-medium leading-tight text-gray-600 whitespace-no-wrap">
-            {friend ? friend.userName : 'Loading...'}
+            {friend ? friend.userName : "Loading..."}
           </div>
           <div className="overflow-hidden text-sm font-medium leading-tight text-gray-600 whitespace-no-wrap">
-            {isOnline ? (
-              <span>Online</span>
-            ): (
-              <span>Offline</span>
-            )}
+            {isOnline ? <span>Online</span> : <span>Offline</span>}
           </div>
         </div>
-        <button 
-          // onClick={handleVideoCall}
-          className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+        <button
+          onClick={handleVideoCall}
+          className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300"
+        >
           <svg
             className="w-6 h-6 text-gray-600 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -216,12 +234,13 @@ function Messages({
             height="24"
             viewBox="0 0 24 24"
           >
-            <Video/>
+            <Video />
           </svg>
         </button>
         <button
-        onClick={() => setCurrentChat(null)} 
-        className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300">
+          onClick={() => setCurrentChat(null)}
+          className="flex self-center p-2 ml-2 text-gray-500 rounded-full focus:outline-none hover:text-gray-600 hover:bg-gray-300"
+        >
           <svg
             className="w-6 h-6 text-gray-600 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +248,11 @@ function Messages({
             height="24"
             viewBox="0 0 24 24"
           >
-            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+            <path
+              fill-rule="evenodd"
+              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+              clip-rule="evenodd"
+            />
           </svg>
         </button>
         <button
@@ -250,7 +273,10 @@ function Messages({
           </svg>
         </button>
       </div>
-      <div className="flex flex-col flex-1 pt-4 overflow-hidden bg-gray-200 rounded-t-xl" ref={scrollRef}>
+      <div
+        className="flex flex-col flex-1 pt-4 overflow-hidden bg-gray-200 rounded-t-xl"
+        ref={scrollRef}
+      >
         <div className="relative flex flex-col flex-1 px-4 overflow-x-hidden overflow-y-auto bg-gray-200 scrollbar">
           <div className="flex justify-center w-full py-2">
             <button className="flex self-center text-xs text-gray-500 focus:outline-none hover:underline">
@@ -263,21 +289,20 @@ function Messages({
           </div>
           <div className="flex flex-col">
             {/* Render message list */}
-            
-            {messages.length !== 0 && messages.map((message, index) => {
-              return message?.sender?._id === user._id || 
-              message?.sender === user._id ? (
-                <div key={index} 
-                  className='self-end w-3/4 my-2'>
+
+            {messages.length !== 0 &&
+              messages.map((message, index) => {
+                return message?.sender?._id === user._id ||
+                  message?.sender === user._id ? (
+                  <div key={index} className="self-end w-3/4 my-2">
                     <SendedChat message={message} />
-                </div>
-              ) : (
-                <div key={index}
-                  className='self-start w-3/4 my-2'>
+                  </div>
+                ) : (
+                  <div key={index} className="self-start w-3/4 my-2">
                     <RecievedChat message={message} />
-                </div>
-              )
-            })}
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
@@ -285,25 +310,25 @@ function Messages({
         <div className="relative flex flex-row items-center h-10 w-8/12">
           {!isRecording && (
             <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-            <button
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="p-1 focus:outline-none focus:shadow-none text-gray-600"
-            >
-              <svg
-                className="w-6 h-6 fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
+              <button
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="p-1 focus:outline-none focus:shadow-none text-gray-600"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.495.93A.5.5 0 0 0 6.5 13c0 1.19.644 2.438 1.618 3.375C9.099 17.319 10.469 18 12 18c1.531 0 2.9-.681 3.882-1.625.974-.937 1.618-2.184 1.618-3.375a.5.5 0 0 0-.995-.07.764.764 0 0 1-.156.096c-.214.106-.554.208-1.006.295-.896.173-2.111.262-3.343.262-1.232 0-2.447-.09-3.343-.262-.452-.087-.792-.19-1.005-.295a.762.762 0 0 1-.157-.096ZM8.99 8a1 1 0 0 0 0 2H9a1 1 0 1 0 0-2h-.01Zm6 0a1 1 0 1 0 0 2H15a1 1 0 1 0 0-2h-.01Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </span>
+                <svg
+                  className="w-6 h-6 fill-current"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.495.93A.5.5 0 0 0 6.5 13c0 1.19.644 2.438 1.618 3.375C9.099 17.319 10.469 18 12 18c1.531 0 2.9-.681 3.882-1.625.974-.937 1.618-2.184 1.618-3.375a.5.5 0 0 0-.995-.07.764.764 0 0 1-.156.096c-.214.106-.554.208-1.006.295-.896.173-2.111.262-3.343.262-1.232 0-2.447-.09-3.343-.262-.452-.087-.792-.19-1.005-.295a.762.762 0 0 1-.157-.096ZM8.99 8a1 1 0 0 0 0 2H9a1 1 0 1 0 0-2h-.01Zm6 0a1 1 0 1 0 0 2H15a1 1 0 1 0 0-2h-.01Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </span>
           )}
 
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -327,7 +352,7 @@ function Messages({
                 </svg>
               </button>
             ) : (
-              <div className='flex'>
+              <div className="flex">
                 <input
                   type="file"
                   name="file"
@@ -358,42 +383,75 @@ function Messages({
                       handleSubmit(file);
                     }
                   }}
-                  hidden  
+                  hidden
                 />
-                  {/* voice */}
-                  {/* <button type="submit" className="p-1 focus:outline-none focus:shadow-none hover:text-blue-500"> */}
-                
+                {/* voice */}
+                {/* <button type="submit" className="p-1 focus:outline-none focus:shadow-none hover:text-blue-500"> */}
 
-                  {/* <button onClick={() => setIsRecording(!isRecording)} className="p-1 text-gray-600 hover:text-blue-500">
+                {/* <button onClick={() => setIsRecording(!isRecording)} className="p-1 text-gray-600 hover:text-blue-500">
                     <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <path fill-rule="evenodd" d="M5 8a1 1 0 0 1 1 1v3a4.006 4.006 0 0 0 4 4h4a4.006 4.006 0 0 0 4-4V9a1 1 0 1 1 2 0v3.001A6.006 6.006 0 0 1 14.001 18H13v2h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-2H9.999A6.006 6.006 0 0 1 4 12.001V9a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
                     <path d="M7 6a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-2a4 4 0 0 1-4-4V6Z"/>
                     </svg>
                   </button> */}
 
-                  
                 {/* image */}
                 {!isRecording && (
                   <>
-                    <button onClick={handleImageClick} type="submit" className="p-1 text-gray-600 hover:text-blue-500">
-                      <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
-                      <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clip-rule="evenodd"/>
+                    <button
+                      onClick={handleImageClick}
+                      type="submit"
+                      className="p-1 text-gray-600 hover:text-blue-500"
+                    >
+                      <svg
+                        className="w-6 h-6 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M13 10a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H14a1 1 0 0 1-1-1Z"
+                          clip-rule="evenodd"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
 
-                    <button onClick={handleVideoClick} type="submit" className="p-1 text-gray-600 hover:text-blue-500">
-                      <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-2 4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H9Zm0 2h2v2H9v-2Zm7.965-.557a1 1 0 0 0-1.692-.72l-1.268 1.218a1 1 0 0 0-.308.721v.733a1 1 0 0 0 .37.776l1.267 1.032a1 1 0 0 0 1.631-.776v-2.984Z" clip-rule="evenodd"/>
+                    <button
+                      onClick={handleVideoClick}
+                      type="submit"
+                      className="p-1 text-gray-600 hover:text-blue-500"
+                    >
+                      <svg
+                        className="w-6 h-6 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm-2 4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H9Zm0 2h2v2H9v-2Zm7.965-.557a1 1 0 0 0-1.692-.72l-1.268 1.218a1 1 0 0 0-.308.721v.733a1 1 0 0 0 .37.776l1.267 1.032a1 1 0 0 0 1.631-.776v-2.984Z"
+                          clip-rule="evenodd"
+                        />
                       </svg>
                     </button>
                   </>
                 )}
-                <span onClick={() => setIsRecording(!isRecording)} className='ml-1'>
-                  <VoiceRecorder 
+                <span
+                  onClick={() => setIsRecording(!isRecording)}
+                  className="ml-1"
+                >
+                  <VoiceRecorder
                     onRecordingComplete={addAudioFile}
                     setRecordedAudioBlob={setRecordedAudioBlob}
-                    style={{ background: "none " ,  borderRadius: 0 }}
+                    style={{ background: "none ", borderRadius: 0 }}
                   />
                 </span>
               </div>
@@ -401,27 +459,27 @@ function Messages({
           </div>
 
           {isRecording ? (
-            <span className='w-full py-3 pl-10 text-md bg-white border border-transparent appearance-none rounded-full placeholder-gray-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue'>
+            <span className="w-full py-3 pl-10 text-md bg-white border border-transparent appearance-none rounded-full placeholder-gray-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue">
               Recording...
             </span>
-          ): (
+          ) : (
             <input
-            className="w-full py-3 pl-10 text-md bg-white border border-transparent appearance-none rounded-tg placeholder-gray-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue"
-            style={{ borderRadius: "25px" }}
-            type="text"
-            placeholder="Message..."
-            autoComplete="off"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
+              className="w-full py-3 pl-10 text-md bg-white border border-transparent appearance-none rounded-tg placeholder-gray-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:text-gray-900 focus:shadow-outline-blue"
+              style={{ borderRadius: "25px" }}
+              type="text"
+              placeholder="Message..."
+              autoComplete="off"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
           )}
 
           {showEmojiPicker && (
             <div
               style={{
                 position: "absolute",
-                bottom: "50px", 
+                bottom: "50px",
                 left: "0",
                 zIndex: "10",
               }}
@@ -437,21 +495,21 @@ function Messages({
 
           {isSharePost && (
             <div
-            // style={{
-            //   position: "absolute",
-            //   bottom: "70px", 
-            //   left: "0",
-            //   zIndex: "10",
-            // }} 
-            style={{
-              position: "absolute",
-              bottom: "70px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              zIndex: "10",
-            }}
+              // style={{
+              //   position: "absolute",
+              //   bottom: "70px",
+              //   left: "0",
+              //   zIndex: "10",
+              // }}
+              style={{
+                position: "absolute",
+                bottom: "70px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                zIndex: "10",
+              }}
             >
-              <div className='flex gap-4'>
+              <div className="flex gap-4">
                 <button
                   onClick={handleSubmit}
                   class="w-28 h-12 text-white font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg shadow-lg hover:scale-105 duration-200 hover:drop-shadow-2xl hover:shadow-[#7dd3fc] hover:cursor-pointer"
@@ -480,14 +538,13 @@ function Messages({
                     Button
                   </svg>
                 </button>
-
               </div>
             </div>
           )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Messages
+export default Messages;
