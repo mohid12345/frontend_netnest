@@ -13,9 +13,11 @@ import emptypost from '../../../public/images/userNoPost.jpg'
 
 function HomePage() {
   const selectedUser = (state) => state.auth.user;
+  console.log('selectedUser from homepage ::', selectedUser);
+  
   const user = useSelector(selectedUser);
   const userId = user._id || "";
-  // console.log('userId log :', userId);
+  console.log('userId log 666666:', userId);
   
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);

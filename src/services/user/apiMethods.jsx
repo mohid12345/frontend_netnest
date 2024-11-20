@@ -1,6 +1,10 @@
 import { apiCall } from "./apiCalls";
 import { chatUrls, connectionUrls, postUrls, userUrls } from "../endPoints";
 
+import { BASE_URL } from "../../constants/baseUrls";
+import { useNotificationSocket } from "../../utils/context/SocketContext/nofi_Socket";
+
+
 // User Register
 
 export const postRegister = (userData) => {
@@ -152,6 +156,14 @@ export const addPost = (postData) => {
       console.log("Postdata in api", postData);
       apiCall("post", postUrls.addPost, postData)
       .then((response) => {
+        if (response.status === 200) {
+          // socket.emit('sendNotification', {
+          //   postImage: postData.image, // Assuming the post data includes an image
+          //   receiverId: 'all', // You might want to send this to all users or specific users
+          //   senderName: postData.userName, // Assuming you have the user's name in the post data
+          //   message: `${postData.userName} added a new post!`
+          // });
+        }
         resolve(response)
       })
       .catch((err) => {
@@ -329,7 +341,7 @@ export const getUserConnection = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       // console.log("userid in getting cnnt", userId);
-      apiCall("post", connectionUrls.getConnection, userId)
+      apiCall("post", connectionUrls.getConnections, userId)
         .then((response) => {
           resolve(response)
         })
@@ -496,6 +508,74 @@ export const reportPost = (postData) => {
     }
   })
 }
+
+//like post with separate postAction
+// export const likePost = async (postData) => {
+//   try {
+//     const response = await apiCall("post", postUrls.likePost, postData);
+//     return response;
+//   } catch (error) {
+//     console.error('Error in likePost:', error);
+//     throw error;
+//   }
+// };
+
+
+//likepost claude update ( lead to few issues,)(nothign wokring)
+// services/post/likeService.js
+// export const likePost = async (postData) => {
+//    try {
+//     const { userId, postId, postOwnerId } = postData;
+    
+//     // Make the API call to like the post
+//     const response = await apiCall("post", postUrls.likePost, { userId, postId });
+    
+//     // Get the socket instance from the notification context
+//     const { socket } = useNotificationSocket();
+    
+//     // If socket is connected, emit the like notification
+//     if (socket?.current) {
+//       socket.current.emit("post-liked", {
+//         likedBy: userId,
+//         postOwnerId: postOwnerId,
+//         postId: postId,
+//         type: "like",
+//         message: "liked your post"
+//       });
+//     }
+    
+//     return response;
+//   } catch (error) {
+//     console.error('Error in likePost:', error);
+//     throw error;
+//   }
+// };
+
+
+// likePost function with socket emit(by gpt - workig not testes)
+// export const likePost = (postData, socket) => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       console.log('happy socket triggered');
+      
+//       apiCall("post", postUrls.likePost, postData)
+//         .then((response) => {
+//           // Emitting a notification event to the server when a post is liked
+//           socket.emit("post-liked", {
+//             likedBy: postData.userId,  // Assuming userId of the liker is in postData
+//             postOwnerId: postData.postOwnerId,  // Assuming postOwnerId is in postData
+//           });
+//           resolve(response);
+//         })
+//         .catch((err) => {
+//           reject(err);
+//         });
+//     } catch (error) {
+//       resolve({ status: 500, message: "Somethings wrong." });
+//     }
+//   });
+// };
+
 
 // like post
 export const likePost = (postData) => {

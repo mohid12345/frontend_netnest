@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 function UserDetails({user, connections, posts}) {
-  console.log("connetions data", connections);
+  // console.log("connetions data", connections);
   const selectUser = (state) => state.auth.user;
   const userData = useSelector(selectUser);
   const userId = userData._id || ""
@@ -88,7 +88,7 @@ function UserDetails({user, connections, posts}) {
   }
 
   const handleNavigate = (user) => {
-    console.log("to messg this user");
+    // console.log("to messg this user");
     if (user) {
       navigate('/chat', { state: { MessageThisUser: user } });
     } else {

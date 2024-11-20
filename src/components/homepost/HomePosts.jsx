@@ -461,7 +461,7 @@ function HomePosts({ post, fetchPosts }) {
           </div>
         </div>
 
-        <div className="text-gray-200  flex justify-between">
+        <div className="text-gray-900 font-bold text-xl  flex justify-between">
           {/* like, comment, share */}
           <div className="py-1 mt-0 flex gap-3">
             {likeCount}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getNotifications } from '../../services/user/apiMethods1'
+import { getNotifications } from '../../services/user/apiMethods'
 import { formatDistanceToNow } from 'date-fns'
 import { Link, useNavigate } from 'react-router-dom'
+// import { io } from 'socket.io-client'
 
 function Notification({onClose}) {
   const selectedUser = (state) => state.auth.user

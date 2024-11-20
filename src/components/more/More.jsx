@@ -116,7 +116,7 @@ function More() {
             </div>
           </div>
         </div>
-        {/* <hr className="mt-4 mb-6" />
+        <hr className="mt-4 mb-6" />
         <p className="py-2 text-sm font-semibold">Email Address</p>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <p className="text-gray-600 text-sm">
@@ -128,10 +128,10 @@ function More() {
             Change
           </button>
         </div>
-        <hr className="mt-4 mb-6" /> */}
+        <hr className="mt-4 mb-6" />
         { !isForgotPswd && ( <div>
-          {/* <p className="py-2 text-sm font-semibold">Change Your Password</p> */}
-          {/* <Formik
+          <p className="py-2 text-sm font-semibold">Change Your Password</p>
+          <Formik
             initialValues={pswdInitialValues}
             validationSchema={pswdValidationSchema}
             onSubmit={submit}
@@ -203,7 +203,7 @@ function More() {
                 Save Password
               </button>
             </Form>
-          </Formik> */}
+          </Formik>
         </div> )}
 
         { isForgotPswd && ( <div>

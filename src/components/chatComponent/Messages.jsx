@@ -29,7 +29,7 @@ function Messages({
   const [video, setVideo] = useState(null);
   const [recordedAudioBlob, setRecordedAudioBlob] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
-  const scrollRef = useRef();
+  // const scrollRef = useRef();
   const navigate = useNavigate();
 
   console.log("currentchat members at :message ::::", currentChat);
@@ -55,11 +55,11 @@ function Messages({
   }, [currentChat, onlineUsers]);
 
   //general 2
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
+  // useEffect(() => {
+  //   if (scrollRef.current) {
+  //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  //   }
+  // }, [messages]);
 
   //for video call
   function randomID(len) {
@@ -76,7 +76,7 @@ function Messages({
   }
 
   //handle video call
-  const handleVideoCall = () =>  {
+  const handleVideoCall = () => {
     const roomId = randomID(10);
     const receiverId = friend?._id;
     console.log("receive id at message :", receiverId);
@@ -122,9 +122,9 @@ function Messages({
       }
       formData.append("file", file);
       // setNewMessage(messageType);
-    } else { 
+    } else {
       messageType = "text";
-      formData.append("text", newMessage); 
+      formData.append("text", newMessage);
     }
 
     formData.append("conversationId", currentChatId);
@@ -160,7 +160,6 @@ function Messages({
       setSharePost(null);
     }
   };
-
 
   //accessory invocation from form and file clicks
 
@@ -202,6 +201,22 @@ function Messages({
     setSharePost(null);
     navigate("/");
   };
+
+  // handle scroll to end of chat
+  const chatEnd = useRef(null);
+
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [messages]);
+
+  const scrollToBottom = () => {
+    chatEndRef.current?.scrollIntoView({ behaviour: "smooth" });
+  };
+  useEffect(() => {
+    if (chatEnd.current) {
+      chatEnd.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="relative flex flex-col flex-1">
@@ -275,7 +290,8 @@ function Messages({
       </div>
       <div
         className="flex flex-col flex-1 pt-4 overflow-hidden bg-gray-200 rounded-t-xl"
-        ref={scrollRef}
+        // ref={scrollRef}
+        // ref={chatEndRef}
       >
         <div className="relative flex flex-col flex-1 px-4 overflow-x-hidden overflow-y-auto bg-gray-200 scrollbar">
           <div className="flex justify-center w-full py-2">
@@ -303,6 +319,20 @@ function Messages({
                   </div>
                 );
               })}
+            {/* <div
+              ref={chatEnd}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                height: 0,
+                overflow: "hidden",
+              }}
+            /> */}
+            {/* <div ref={chatEnd} style={{ margin: 0, padding: 0 }} /> */}
+
+            {/* ref div to scroll to the end */}
+            {/* <div  ref={chatEndRef} className="" /> */}
+            {/* <div ref={chatEnd} style={{ marginBottom: '0px' }} /> */}
           </div>
         </div>
       </div>

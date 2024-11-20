@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import logoImg from "/images/logoNet.png"
 import CreatePost from '../posts/CreatePost'
 import Searchbar from '../searchbar/Searchbar'
+import Settings from '../settings/Settings'
 
   
 function SideNavBar() {
@@ -244,6 +245,7 @@ const closeNotification = () => {
                 </li>
                 <li>
                   <div
+                  onClick={openSettingsModal}
                 className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group cursor-pointer"
                   >
                     <svg

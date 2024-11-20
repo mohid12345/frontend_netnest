@@ -12,9 +12,6 @@ function UserProfile() {
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
 
-  
-  
-  
 
   useEffect(() => {
     setLoading(true)    

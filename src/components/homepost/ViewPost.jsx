@@ -496,7 +496,7 @@ function ViewPost({
                   
                   <div className='text-gray-700 block pb-4 px-4'>
                     <p className='font-semibold'>{post.title}</p>
-                    {/* <p className='text-sm'>{post.description}</p> */}
+                    <p className='text-sm'>{post.description}</p>
                   </div>
 
                   {showLikedUsersPopup && <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />}

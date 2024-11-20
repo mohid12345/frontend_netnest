@@ -13,6 +13,7 @@ import { loginSuccess } from "../../utils/context/reducers/authSlice";
 import { auth, provider } from "../../utils/firebase/config";
 import { signInWithPopup } from "firebase/auth";
 import logoImg from "/images/logoNet.png";
+import Button from "../../components/accessories/button/Button";
 
 function Login() {
   const navigate = useNavigate();
@@ -195,11 +196,12 @@ function Login() {
                 </Link>
               </div>
 
-              <div className="flex items-center justify-between mb-3">
+              {/* <div className="flex items-center justify-between mb-3">
                 <button className=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 ">
                   Sign In
                 </button>
-              </div>
+              </div> */}
+              <Button text="Sign In" className="bg-gray-400"/>
             </Form>
           </Formik>
 
