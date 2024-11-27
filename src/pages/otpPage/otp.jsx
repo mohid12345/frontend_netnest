@@ -67,14 +67,14 @@ function Otp() {
 
     postOTP({otp: otp}) 
       .then((response) => {
-        console.log("In response 1z:", response);
+        // console.log("In response 1z:", response);
         const data = response.data
-        console.log("In response 2z:", data);
+        // console.log("In response 2z:", data);
         
         if(response.status == 200) {
           toast.success(data.message)
           localStorage.removeItem("otpTimer");
-          dispatch(loginSuccess({user: data}))
+          // dispatch(loginSuccess({user: data}))
               navigate('/login')
         } else {
           toast.error(data.message)

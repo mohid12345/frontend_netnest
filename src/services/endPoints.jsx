@@ -1,4 +1,3 @@
-import { getExplorePosts, handleComment } from "./user/apiMethods1"
 
 export const userUrls = {
     register: "/register",

@@ -1,47 +1,93 @@
+// NotificationSocketContext.jsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import { BASE_URL } from "../../../constants/baseUrls";
+import { toast } from "sonner";
 
-const NotificationSocketContext = createContext();
+// Create the context with a default value
+const NotificationSocketContext = createContext({
+  socket: null,
+  isConnected: false,
+  notifications: [],
+  sendNotification: () => {} // Default empty function
+});
 
-export const useNotificationSocket = () => useContext(NotificationSocketContext);
+export const useNotificationSocket = () => {
+  const context = useContext(NotificationSocketContext);
+  if (!context) {
+    throw new Error('useNotificationSocket must be used within a NotificationSocketProvider');
+  }
+  return context;
+};
 
 export const NotificationSocketProvider = ({ children }) => {
-  const socket = useRef(null);
+  const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const selectedUser = (state) => state.auth.user;
-  const user = useSelector(selectedUser);
-  console.log("user id at nofi_sockets :::", user);
+  const [notifications, setNotifications] = useState([]);
   
-  const userId = user?._id || "";
+  const user = useSelector((state) => state.auth.user);
+  const userId = user?._id;
 
   useEffect(() => {
-    socket.current = io(`${BASE_URL}/notifications`); // You might use a namespace like /notifications if the backend supports it
+    if (!userId) return;
 
-    socket.current.on('connect', () => {
-      setIsConnected(true);
-      console.log('Notification socket connected');
-      if (user) {
-        console.log("Emitting notification addUser");
-        socket.current.emit("addUser", userId);
-      }
+    // Connect to the notifications namespace
+    socketRef.current = io(`${BASE_URL}/notifications`, {
+      withCredentials: true,
     });
 
-    socket.current.on('disconnect', () => {
+    socketRef.current.on('connect', () => {
+      setIsConnected(true);
+      console.log('Connected to notification socket');
+      socketRef.current.emit("addUser", userId);
+    });
+
+    socketRef.current.on('receiveNotification', (notification) => {
+      
+      console.log('Received notification:', notification);
+      toast.success("receivered noti::::", notification)
+      setNotifications(prev => [...prev, notification]);
+    });
+
+    socketRef.current.on('connect_error', (error) => {
+      console.error('Notification socket connection error:', error);
       setIsConnected(false);
-      console.log('Notification socket disconnected');
+    });
+
+    socketRef.current.on('disconnect', () => {
+      console.log('Disconnected from notification socket');
+      setIsConnected(false);
     });
 
     return () => {
-      if (socket.current) {
-        socket.current.disconnect();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
       }
     };
-  }, [user, userId]);
+  }, [userId]);
+
+  const sendNotification = (receiverId, type, content) => {
+    if (socketRef.current && isConnected) {
+      socketRef.current.emit("sendNotification", {
+        senderId: userId,
+        receiverId,
+        type,
+        content
+      });
+    }
+  };
+
+  // Make sure to include all values in the context
+  const value = {
+    socket: socketRef.current,
+    isConnected,
+    notifications,
+    sendNotification
+  };
 
   return (
-    <NotificationSocketContext.Provider value={{ socket, isConnected }}>
+    <NotificationSocketContext.Provider value={value}>
       {children}
     </NotificationSocketContext.Provider>
   );

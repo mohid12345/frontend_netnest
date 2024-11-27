@@ -8,7 +8,6 @@ import * as Yup from "yup";
 import Cropper from "react-easy-crop";
 import Loader from "../loader/loader";
 import { addPost } from "../../services/user/apiMethods";
-import { Share2 } from "lucide-react";
 
 function getCroppedImg(imageSrc, crop) {
   const createImage = (
@@ -190,6 +189,7 @@ function CreatePost({ closeAddPost }) {
           resetForm();
           closeAddPost();
           navigate("/");
+          window.location.reload();
         } else {
           toast.error(postResponse.data.message);
         }

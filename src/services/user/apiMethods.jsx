@@ -375,7 +375,7 @@ export const followUser = (data) => {
 export const unFollowUser = (data) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("post", connectionUrls.unFollow, data)
+      apiCall("post", connectionUrls.unfollow, data)
         .then((response) => {
           resolve(response)
         })
