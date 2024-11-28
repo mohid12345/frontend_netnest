@@ -1026,3 +1026,22 @@ export const switchAccountPrivate = (userId) => {
   })
 }
 
+//delete One message
+export const deleteOneMsg = (id) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `chat/delete-one?id=${id}`
+      apiCall("delete", url)
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    } catch (error) {
+      resolve({ status: 500, message: "Somethings wrong." });
+    }
+  })
+}
+
+

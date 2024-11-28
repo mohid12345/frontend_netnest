@@ -13,6 +13,8 @@ function MessageUsersModal({
 }) {
 
   const userId = user._id
+  // console.log('chat eligibel user77 ::', chatEligibleUsers);
+  
 
   return (
     <div className='fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-40 backdrop-blur-md'>

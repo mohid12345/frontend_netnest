@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 export const pswdInitialValues = {
   currentPassword: "",
   newPassword: "",
-  // confirmPassword: "",
+  confirmPassword: "",
 }
 
 export const pswdValidationSchema = Yup.object({
@@ -22,7 +22,7 @@ export const pswdValidationSchema = Yup.object({
       'Password cannot contain only whitespace',
       value => value && value.trim().length > 0
     ),
-    // confirmPassword: Yup.string()
-    //   .oneOf([Yup.ref("newPassword")], "Passwords must match")
-    //   .required("Confirm Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("newPassword")], "Passwords must match")
+      .required("Confirm Password is required"),
 })

@@ -173,6 +173,23 @@ function More() {
                       </div>
                     </label>
                   </div>
+                  <div>
+                    <label htmlFor="confirmPassword">
+                      <span className="text-gray-500 text-xs">Confirm New Password</span>
+                      <div className="relative max-w-60 flex overflow-hidden rounded-md border-2 transition focus-within:border-green-600">
+                        <Field
+                          type={showPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          className="w-full max-w-60 flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+                          placeholder="***********"
+                        />
+                      </div>
+                      <div className="h-4 mt-1">
+                        <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-xs" />
+                      </div>
+                    </label>
+                  </div>
                 </div>
                 <span onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? (
