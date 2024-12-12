@@ -6,7 +6,6 @@ import MiniProfile from '../../components/userMiniProfile/MiniProfile'
 import { getAllPosts } from '../../services/user/apiMethods'
 import Header from '../../components/header/header'
 import { toast } from 'sonner'
-import Loader from '../../components/loader/loader'
 import HomePostLoader from '../../components/loader/HomePostLoader'
 import emptypost from '../../../public/images/userNoPost.jpg'
   
@@ -50,7 +49,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col mr-2 lg:ml-10" style={{width:'870px'}}>
+      <div className="flex flex-col mr-2 lg:ml-10 w-full">
         <div className="p-2 rounded-md bg-white dark:bg-black">
           <Header />
         </div>
@@ -67,7 +66,7 @@ function HomePage() {
                 <p className='text-gray-500'>Build your connections and share your moments.</p>
               </div>
             ) : (
-              <div className="w-full lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
+              <div className="xl:w-[90%] lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
                 {posts.map((post) => (
                   <HomePosts key={post._id} post={post} fetchPosts={fetchPosts} />
                 ))}
@@ -76,7 +75,7 @@ function HomePage() {
           </>
         )}
       </div>
-      <div className="hidden lg:flex fixed right-0">
+      <div className="hidden lg:flex justify-end">
         <MiniProfile />
       </div>
     </>

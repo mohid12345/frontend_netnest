@@ -61,7 +61,7 @@ function Otp() {
     const otp = getOtp || ""
     console.log("otp in :", otp );
     if(otp.trim().length !==4 || otp == "") {
-      // toast.error("invalid OTP")
+      toast.error("invalid OTP")
       return
     }
 

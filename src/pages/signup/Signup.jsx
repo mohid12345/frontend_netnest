@@ -27,10 +27,9 @@ function Signup() {
       .then((response) => {
         const data = response.data;
         if (response.status === 200) {
-          console.log("response", response.data);
+          // console.log("response", response.data);
           toast.success(data.message);
           navigate(`/otp?email=${data.email}`);
-          // navigate('/otp')
         } else {
           toast.error(data.message);
         }

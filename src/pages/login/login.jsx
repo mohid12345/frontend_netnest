@@ -29,12 +29,9 @@ function Login() {
   }, [user, navigate]);
 
   const submit = (values) => {
-    console.log(values);
     postLogin(values)
       .then((response) => {
-        console.log("login response :", response);
         const data = response.data;
-        console.log("login response 1 :", data);
         if (response.status == 200) {
           toast.info(data.message);
           dispatch(loginSuccess({ user: data }));
@@ -125,7 +122,7 @@ function Login() {
                   id="password"
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
-                  autoComplete="off" // Add this line
+                  autoComplete="on"
                 />
                 <label
                   htmlFor="password"
@@ -195,13 +192,7 @@ function Login() {
                   Forgot Password
                 </Link>
               </div>
-
-              {/* <div className="flex items-center justify-between mb-3">
-                <button className=" z-30 w-full py-1.5 px-4 bg-gray-500 hover:bg-blue-700 rounded-md text-white relative font-bold font-sans overflow-hidden transition-all duration-700 ">
-                  Sign In
-                </button>
-              </div> */}
-              <Button text="Sign In" className="bg-gray-400"/>
+              <Button text="Sign In" className="bg-gray-400" />
             </Form>
           </Formik>
 
