@@ -1,8 +1,9 @@
 import { apiCall } from "./apiCalls";
 import { chatUrls, connectionUrls, postUrls, userUrls } from "../endPoints";
-
 import { BASE_URL } from "../../constants/baseUrls";
 import { useNotificationSocket } from "../../utils/context/SocketContext/nofi_Socket";
+import { StatusCodes } from "http-status-codes";
+
 
 
 // User Register
@@ -18,7 +19,7 @@ export const postRegister = (userData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({staus: 500, message: "Something wrong"})
+      resolve({staus: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -35,7 +36,7 @@ export const postOTP = (otp) => {
         reject(err)
       })
     } catch (error) {
-      resolve({status:500, message: "something wrong"})
+      resolve({status:StatusCodes.INTERNAL_SERVER_ERROR, message: "something wrong"})
     }
   })
 } 
@@ -53,7 +54,7 @@ export const postResendOTP = (email) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -71,7 +72,7 @@ export const postLogin = (userData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -89,7 +90,7 @@ export const forgotOTP = (otp) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -107,7 +108,7 @@ export const forgotPassword = (email) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -125,7 +126,7 @@ export const renewPassword = (userData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -144,7 +145,7 @@ export const googleAuthenticate = (userData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -170,7 +171,7 @@ export const addPost = (postData) => {
         reject(err)
       })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 } 
@@ -189,7 +190,7 @@ export const getUserPost = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -207,7 +208,7 @@ export const getAllPosts = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -225,7 +226,7 @@ export const getEditPost = (postId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -244,7 +245,7 @@ export const deletePost = (postData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -262,7 +263,7 @@ export const editProfile = (userData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -279,7 +280,7 @@ export const changePassword = (values) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -297,7 +298,7 @@ export const getUserSuggestions = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -313,7 +314,7 @@ export const getUserSearch = (searchQuery) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -331,7 +332,7 @@ export const getUserDetails = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -349,7 +350,7 @@ export const getUserConnection = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -366,7 +367,7 @@ export const followUser = (data) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -383,7 +384,7 @@ export const unFollowUser = (data) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -402,7 +403,7 @@ export const getRequestedUsers = (userId) => {
           reject(err);
         });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   });
 };
@@ -419,7 +420,7 @@ export const rejectFollowRequest = (data) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -436,7 +437,7 @@ export const acceptFollowRequest = (data) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -453,7 +454,7 @@ export const SavePost = (postData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -471,7 +472,7 @@ export const getSavedPosts = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -487,7 +488,7 @@ export const editPost = (postData) => {
         reject(err);
       });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -504,7 +505,7 @@ export const reportPost = (postData) => {
           reject(err);
         });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -571,7 +572,7 @@ export const reportPost = (postData) => {
 //           reject(err);
 //         });
 //     } catch (error) {
-//       resolve({ status: 500, message: "Somethings wrong." });
+//       resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
 //     }
 //   });
 // };
@@ -589,7 +590,7 @@ export const likePost = (postData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -608,7 +609,7 @@ export const getPostComments = (postId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -625,7 +626,7 @@ export const addComment = (commentData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -642,7 +643,7 @@ export const replyComment = (commentData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -659,7 +660,7 @@ export const deleteComment = (commentId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -675,7 +676,7 @@ export const deleteReplyComment = (commentData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -692,7 +693,7 @@ export const getCommentsCount = (postId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -709,7 +710,7 @@ export const handleComment = (postData) => {
         reject(err)
       })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -727,7 +728,7 @@ export const handleLike = (postData) => {
         reject(err)
       })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -744,7 +745,7 @@ export const getNotifications = (userId) => {
         reject(err);
       });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -760,7 +761,7 @@ export const verifyEmailUpdate = (values) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -778,7 +779,7 @@ export const verifyOTPForEmail = (otp) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -796,7 +797,7 @@ export const verifyOTPForEmail = (otp) => {
 //           reject(err)
 //         })
 //     } catch (error) {
-//       resolve({status: 500, message: "Something wrong"})
+//       resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
 //     }
 //   })
 // }
@@ -813,7 +814,7 @@ export const deleteAccount = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -830,7 +831,7 @@ export const getExplorePosts = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -847,7 +848,7 @@ export const getAllUsers = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status: 500, message: "Something wrong"})
+      resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -864,7 +865,7 @@ export const getChatElibleUsers = (userId) => {
         reject(err);
       });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -881,7 +882,7 @@ export const addConversation = (conversationData) => {
         reject(err);
       });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -899,7 +900,7 @@ export const getUserConversations = (userId) => {
         reject(err);
       });
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -917,7 +918,7 @@ export const findConversation = (conversationData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status:500, message: "Something wrong"})
+      resolve({status:StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -935,7 +936,7 @@ export const addMessage = (formData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status:500, message: "Something wrong"})
+      resolve({status:StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -953,7 +954,7 @@ export const getUserMessages = (conversationId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({status:500, message: "Something wrong"})
+      resolve({status:StatusCodes.INTERNAL_SERVER_ERROR, message: "Something wrong"})
     }
   })
 }
@@ -970,7 +971,7 @@ export const getLastMessages = () => {
       reject(err)
      })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -987,7 +988,7 @@ export const setMessageRead = (messageData) => {
         reject(err)
       })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -1004,7 +1005,7 @@ export const getUnReadMessages = (messageData) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -1021,7 +1022,7 @@ export const switchAccountPrivate = (userId) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -1039,7 +1040,7 @@ export const deleteOneMsg = (id) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
@@ -1057,7 +1058,7 @@ export const deleteConverstion = (id) => {
           reject(err)
         })
     } catch (error) {
-      resolve({ status: 500, message: "Somethings wrong." });
+      resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
     }
   })
 }
