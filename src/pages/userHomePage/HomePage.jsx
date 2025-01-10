@@ -49,7 +49,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col mr-2 lg:ml-10 w-full">
+      <div className="flex flex-col mr-2 lg:ml-10 w-[90rem]">
         <div className="p-2 rounded-md bg-white dark:bg-black">
           <Header />
         </div>
@@ -75,7 +75,7 @@ function HomePage() {
           </>
         )}
       </div>
-      <div className="hidden lg:flex justify-end">
+      <div className="hidden lg:flex justify-end ">
         <MiniProfile />
       </div>
     </>
