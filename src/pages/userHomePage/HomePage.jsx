@@ -49,7 +49,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="flex flex-col mr-2 lg:ml-10 w-[90rem]">
+      <div className="flex flex-col mr-2 lg:ml-10 w-[58%]">
         <div className="p-2 rounded-md bg-white dark:bg-black">
           <Header />
         </div>
@@ -66,7 +66,7 @@ function HomePage() {
                 <p className='text-gray-500'>Build your connections and share your moments.</p>
               </div>
             ) : (
-              <div className="xl:w-[90%] lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
+              <div className="xl:w-[] lg:px-10 p-4 py-4 mr-2 h-max rounded-md bg-white dark:bg-black">
                 {posts.map((post) => (
                   <HomePosts key={post._id} post={post} fetchPosts={fetchPosts} />
                 ))}
