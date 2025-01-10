@@ -4,7 +4,8 @@ import {getAuth, GoogleAuthProvider} from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyA1qYbm0ETiJ02V4P4tvKLI3bjpbMOjFrc",
-  authDomain: "netnest-eeb8f.firebaseapp.com",
+  // authDomain: "netnest-eeb8f.firebaseapp.com",
+  authDomain: "netnest.online",
   projectId: "netnest-eeb8f",
   storageBucket: "netnest-eeb8f.appspot.com",
   messagingSenderId: "28604244918",
