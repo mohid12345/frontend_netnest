@@ -85,7 +85,7 @@ function ChatUsers({
   return (
     <div
       className={`
-      relative flex flex-col h-full bg-white border-r border-gray-300 shadow-xl transition-all duration-500 ease-in-out
+      relative flex flex-col  bg-white border-r border-gray-300 shadow-xl transition-all duration-500 ease-in-out
       ${currentChat ? "hidden md:flex" : "flex"}
     `}
       style={{ width: "25rem", zIndex: 40 }}
@@ -168,7 +168,7 @@ function ChatUsers({
             </ul>
           </div>
           <div className="relative mt-2 mb-4 overflow-x-hidden overflow-y-auto scrolling-touch lg:max-h-sm scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray">
-            <ul className="flex flex-col inline-block w-full h-screen px-2 select-none">
+            <ul className="flex flex-col w-full  px-2 select-none">
               {/* {console.log("conversations",conversations)} */}
               {conversations &&
                 conversations.map((conversation) => (

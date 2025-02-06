@@ -8,7 +8,6 @@ import { RouterProvider } from "react-router-dom";
 import { Toaster } from "sonner";
 import { store, persistor } from "./utils/context/store";
 import appRouter from "./routes/UserRoutes";
-import { SocketProvider } from "./utils/context/SocketContext/SocketContext";
 import { NotificationSocketProvider } from "./utils/context/SocketContext/nofi_Socket";
 
 // Create a wrapper component to handle providers
@@ -16,12 +15,10 @@ const AppWrapper = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SocketProvider>
           <NotificationSocketProvider>
             <RouterProvider router={appRouter} />
             <Toaster richColors position="top-right" />
           </NotificationSocketProvider>
-        </SocketProvider>
       </PersistGate>
     </Provider>
   );

@@ -203,20 +203,16 @@ function Messages({
   };
 
   // handle scroll to end of chat
-  const chatEnd = useRef(null);
+  const chatEndRef = useRef(null);
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behaviour: "smooth" });
   };
-  useEffect(() => {
-    if (chatEnd.current) {
-      chatEnd.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
+
 
   return (
     <div className="relative flex flex-col flex-1">
@@ -319,20 +315,7 @@ function Messages({
                   </div>
                 );
               })}
-            {/* <div
-              ref={chatEnd}
-              style={{
-                position: "absolute",
-                bottom: 0,
-                height: 0,
-                overflow: "hidden",
-              }}
-            /> */}
-            {/* <div ref={chatEnd} style={{ margin: 0, padding: 0 }} /> */}
-
-            {/* ref div to scroll to the end */}
-            {/* <div  ref={chatEndRef} className="" /> */}
-            {/* <div ref={chatEnd} style={{ marginBottom: '0px' }} /> */}
+            <div  ref={chatEndRef} />
           </div>
         </div>
       </div>
