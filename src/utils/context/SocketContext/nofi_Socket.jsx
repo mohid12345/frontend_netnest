@@ -1,4 +1,3 @@
-// NotificationSocketContext.jsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
@@ -9,7 +8,7 @@ import { toast } from "sonner";
 const NotificationSocketContext = createContext({
   socket: null,
   isConnected: false,
-  notifications: [],
+  notificationsLiv: [],
   sendNotification: () => {} // Default empty function
 });
 
@@ -24,7 +23,9 @@ export const useNotificationSocket = () => {
 export const NotificationSocketProvider = ({ children }) => {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [notificationsLiv, setNotificationsLiv] = useState([]);
+  
+  console.log('nofi111', notificationsLiv);
   
   const user = useSelector((state) => state.auth.user);
   const userId = user?._id;
@@ -43,11 +44,11 @@ export const NotificationSocketProvider = ({ children }) => {
       socketRef.current.emit("addUser", userId);
     });
 
-    socketRef.current.on('receiveNotification', (notification) => {
+    socketRef.current.on('notification', (notification) => {
       
       console.log('Received notification:', notification);
-      toast.success("receivered noti::::", notification)
-      setNotifications(prev => [...prev, notification]);
+      toast.success("new Notification")
+      setNotificationsLiv(prev => [...prev, notification]);
     });
 
     socketRef.current.on('connect_error', (error) => {
@@ -82,7 +83,7 @@ export const NotificationSocketProvider = ({ children }) => {
   const value = {
     socket: socketRef.current,
     isConnected,
-    notifications,
+    notificationsLiv,
     sendNotification
   };
 

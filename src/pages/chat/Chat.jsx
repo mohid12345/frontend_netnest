@@ -10,143 +10,142 @@ import { addConversation, getLastMessages, getUserConversations, getUserDetails 
 import VideoCallModal from '../../components/chatComponent/VideoCallModal'
 // import ChatNavbar from '../../components/chatComponent/ChatNavbar'
 
-function Chat() {
 
-  const selectUser = (state) => state.auth.user
-  const user  = useSelector(selectUser)
-  const userId = user._id //get user id
-  const socket = useRef()
-  const navigate = useNavigate()
+function Chat() {
+  const selectUser = (state) => state.auth.user;
+  const user = useSelector(selectUser);
+  const userId = user._id; // Get user ID
+  const socket = useRef(null);
+  const navigate = useNavigate();
   const [conversations, setConversations] = useState([]);
-  const [currentChat, setCurrentChat] = useState(null);//persons who are sepeaking( 2pple)
-  console.log("current chat persons",currentChat); //will show sender and receiver or the current two personnels
-  const [messages, setMessages] = useState([])
-  const [lastMessages, setLastMessages] = useState([])
+  const [currentChat, setCurrentChat] = useState(null); // Persons who are speaking (2 people)
+  const [messages, setMessages] = useState([]);
+  const [lastMessages, setLastMessages] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [isGroup, setIsGroup] = useState(false);
   const [arrivalMessage, setArrivalMessage] = useState(null);
 
   const [joinVideoCall, setJoinVideoCall] = useState(false);
   const [videoCallJoinRoomId, setVideoCallJoinRoomId] = useState("");
-  const [isSharePost, setSharePost] = useState(null)
+  const [isSharePost, setSharePost] = useState(null);
   const [callRequestedUser, setCallRequestedUser] = useState({
     name: "",
     profile: "",
   });
 
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // const messageUserId = queryParams.get("userId");
-  // console.log("messageUserId in chat", messageUserId);
-
-
-  //set convestions of two people
-  const { shareUser, sharePost } = location.state || {}; //sharuser is the receiver guy
+  // Set conversations of two people
+  const { shareUser, sharePost } = location.state || {}; // shareUser is the receiver
   useEffect(() => {
-    if(shareUser) {
-      const userId = user._id
-      const senderId = shareUser._id
-      addConversation({senderId: userId, receiverId: senderId})
-      .then((response) => {
-        const userData = response.data;
-        const existChat = conversations.filter((conver) => conver._id === userData._id)
-        if(existChat.length === 0) {
-          setConversations((prev) => [...prev, userData])
-          console.log("");
-        }
-        setCurrentChat(userData)//statae
-        setSharePost(sharePost._id)//for sharing post//state
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (shareUser) {
+      const senderId = shareUser._id;
+      addConversation({ senderId: userId, receiverId: senderId })
+        .then((response) => {
+          const userData = response.data;
+          const existChat = conversations.find((conver) => conver._id === userData._id);
+          if (!existChat) {
+            setConversations((prev) => [...prev, userData]);
+          }
+          setCurrentChat(userData);
+          setSharePost(sharePost?._id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-  },[shareUser])
+  }, [shareUser]);
 
-
-  //add conversation to db
+  // Add conversation to DB
   const { MessageThisUser } = location.state || {};
   useEffect(() => {
-    if(MessageThisUser) {
-      const userId = user._id
-      const senderId = MessageThisUser._id
-      addConversation({senderId: userId, receiverId: senderId})//addConversation with two pple
-      .then((response) => {
-        const userData = response.data;
-        const existChat = conversations.filter((conver) => conver._id === userData._id)
-        if(existChat.length === 0) {
-          setConversations((prev) => [...prev, userData])
-          console.log("");
-        }
-        setCurrentChat(userData)
-      })
-      .catch((error) => {
-        console.log(error);
+    if (MessageThisUser) {
+      const senderId = MessageThisUser._id;
+      addConversation({ senderId: userId, receiverId: senderId }) // Add conversation with two people
+        .then((response) => {
+          const userData = response.data;
+          const existChat = conversations.find((conver) => conver._id === userData._id);
+          if (!existChat) {
+            setConversations((prev) => [...prev, userData]);
+          }
+          setCurrentChat(userData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [MessageThisUser]);
+
+  
+  // Initialize socket connection and get messages
+  useEffect(() => {
+    if (!socket.current) {
+      socket.current = io(BASE_URL);
+
+      socket.current.on("connect", () => {
+        console.log("Socket connected");
+      });
+
+      socket.current.on("disconnect", () => {
+        console.log("Socket disconnected");
+      });
+
+      socket.current.on("getMessage", (data) => {
+        const senderId = data.senderId;
+        console.log("Received message data", data);
+
+        getLastMessages();
+        getUserDetails(senderId)
+          .then((response) => {
+            console.log("User details response", response.data);
+            setArrivalMessage({
+              sender: response.data.user,
+              text: data.text,
+              attachment: {
+                type: data.messageType,
+                filename: data.file,
+              },
+              createdAt: Date.now(),
+            });
+          });
       });
     }
-  }, [MessageThisUser])
 
+    getUserConversations(userId).then((response) => {
+      setConversations(response.data);
+    });
 
+    getLastMessages().then((response) => {
+      console.log("Last messages response", response.data);
+      setLastMessages(response.data);
+    });
 
-  //getmessage    
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+        socket.current = null;
+      }
+    };
+  }, []);
+
+  // Handle received message
   useEffect(() => {
-
-    socket.current = io(BASE_URL)
-
-    getUserConversations(userId) 
-      .then((response) => {
-        setConversations(response.data)
-      })
-
-    getLastMessages()
-      .then((response) => {
-        console.log("res for last msg", response.data);
-        setLastMessages(response.data)
-      })
-//listen to server to receive an message//and its not in message. its passed as props
-    socket.current.on("getMessage", (data) => {
-      const senderId = data.senderId
-      console.log("get messag data", data);
-      getLastMessages()
-      getUserDetails(senderId)
-        .then((response) => {
-          console.log("res from userdetails", response.data);
-          setArrivalMessage({
-            sender: response.data.user,
-            text: data.text,
-            attachment: {
-              type: data.messageType,
-              filename: data.file,
-            },
-            createdAt: Date.now(),
-          })
-          console.log("arrivalMessage is",arrivalMessage);
-        })
-    })
-  }, [])
-
-
-
-//handling received message
-  useEffect(() => {
-    ( arrivalMessage && currentChat?.members.includes(arrivalMessage?.sender)) || 
-    (currentChat?.members.find(
-      (member) => member._id !== arrivalMessage?.sender
-    ) && 
-      setMessages((prev) => [...prev, arrivalMessage])
-    )
-    console.log("messages in useffect", messages)
-    console.log("arrivalMessage in useffect", arrivalMessage)
-  },[arrivalMessage, currentChat])
+    if (
+      (arrivalMessage && currentChat?.members.includes(arrivalMessage?.sender)) ||
+      currentChat?.members.some((member) => member._id !== arrivalMessage?.sender)
+    ) {
+      setMessages((prev) => [...prev, arrivalMessage]);
+    }
+    console.log("Updated messages", messages);
+    console.log("Latest arrivalMessage", arrivalMessage);
+  }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket?.current?.emit("addUser", user._id)
-    socket?.current?.on("getUsers", (users) => {
-      setOnlineUsers(users)
-    })
-  },[user])
-
-
+    if (socket.current) {
+      socket.current.emit("addUser", user._id);
+      socket.current.on("getUsers", (users) => {
+        setOnlineUsers(users);
+      });
+    }
+  }, [user]);
 
 
 //video call

@@ -8,8 +8,6 @@ function Person({ conversation, currentUser, lastMessages, onlineUsers }) {
   const userId = currentUser._id;
   const [lastMessageText, setLastMessageText] = useState("");
 
-  console.log("conversito435 ::", conversation);
-
   const handleDeleteConv = (id) => {
     try {
       deleteConverstion(id)

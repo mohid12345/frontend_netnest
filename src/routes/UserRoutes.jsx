@@ -14,7 +14,6 @@ import { adminLoginRouter, adminRouter } from "./adminRouter";
 import UserEditProfile from "../components/profile/UserEditProfile";
 import UserProfile from "../pages/userProfile/UserProfile"
 import More from "../components/more/More";
-import Notifications from "../components/notification/Notifications"
 import Notification from "../components/notification/Notification";
 import Chat from "../pages/chat/Chat";
 import ProtectedVideoCall from "../components/chatComponent/ProtectedVideoCall";
@@ -54,7 +53,6 @@ const appRouter = createBrowserRouter([
       {
         path: "/notifications",
         element: <Notification/>
-        // element: <Notifications />
       },
       {
         path: "/test",

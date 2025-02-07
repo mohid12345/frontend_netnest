@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getNotifications } from '../../services/user/apiMethods'
 import { formatDistanceToNow } from 'date-fns'
-import { Link, useNavigate } from 'react-router-dom'
-// import { io } from 'socket.io-client'
+import { useNavigate } from 'react-router-dom'
+import { useNotificationSocket } from '../../utils/context/SocketContext/nofi_Socket'
 
 function Notification({onClose}) {
   const selectedUser = (state) => state.auth.user
@@ -11,7 +11,9 @@ function Notification({onClose}) {
   const userId = user._id || ""
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate()
+  const { notificationsLiv } = useNotificationSocket(); // Access notifications from context
 
+  console.log('11111', notificationsLiv);
   useEffect(() => {
     try {
       getNotifications({userId})

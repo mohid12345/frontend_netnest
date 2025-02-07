@@ -18,20 +18,6 @@ function App() {
     }
   }, [user, navigate]);
 
-  // Handle notifications
-  useEffect(() => {
-    if (isConnected && notifications.length > 0) {
-      // Get the latest notification
-      const lastNotification = notifications[notifications.length - 1];
-      toast(
-        <div className="flex gap-2">
-          <p className="text-sm">
-            {lastNotification.content}
-          </p>
-        </div>
-      );
-    }
-  }, [notifications, isConnected]);
 
   return (
     <Protect>
