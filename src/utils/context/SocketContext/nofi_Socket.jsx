@@ -48,7 +48,7 @@ export const NotificationSocketProvider = ({ children }) => {
       
       console.log('Received notification:', notification);
       toast.success("new Notification")
-      setNotificationsLiv(prev => [...prev, notification]);
+      setNotificationsLiv(prev => [notification]);
     });
 
     socketRef.current.on('connect_error', (error) => {

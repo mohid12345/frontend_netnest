@@ -70,7 +70,7 @@ function SideNavBar() {
     const [notifBadge, setNotifBadge] = useState(notificationsLiv.length);
 
     useEffect(() => {
-        setNotifBadge(notificationsLiv.length); // Update badge count when new notifications arrive
+        setNotifBadge((curr) => curr += 1); // Update badge count when new notifications arrive
     }, [notificationsLiv]);
 
     const handleResetCount = () => {
