@@ -68,9 +68,13 @@ function SideNavBar() {
     //Notificaion Badge
     const { notificationsLiv } = useNotificationSocket();
     const [notifBadge, setNotifBadge] = useState(notificationsLiv.length);
+    console.log("notifi badge", notifBadge);
+    console.log("notifi badge via notfi", notificationsLiv);
 
     useEffect(() => {
-        setNotifBadge((curr) => curr += 1); // Update badge count when new notifications arrive
+        if (notificationsLiv.length > 0) {
+            setNotifBadge((curr) => (curr += 1)); // Update badge count when new notifications arrive
+        }
     }, [notificationsLiv]);
 
     const handleResetCount = () => {
@@ -205,12 +209,6 @@ function SideNavBar() {
                                     />
                                 </svg>
                                 <span className="flex-1 ms-3 whitespace-nowrap text-lg">Message</span>
-                                {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span> */}
-                                {/* <div tabindex="0" aria-label="heart icon" role="img" class="focus:outline-none w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.00059 3.01934C9.56659 1.61334 11.9866 1.66 13.4953 3.17134C15.0033 4.68334 15.0553 7.09133 13.6526 8.662L7.99926 14.3233L2.34726 8.662C0.944589 7.09133 0.997256 4.67934 2.50459 3.17134C4.01459 1.662 6.42992 1.61134 8.00059 3.01934Z" fill="#EF4444" />
-                          </svg>
-                      </div> */}
                             </Link>
                         </li>
                         <Link to={"/explore"}>
