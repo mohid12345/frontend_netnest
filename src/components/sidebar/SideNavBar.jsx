@@ -121,7 +121,7 @@ function SideNavBar() {
                             />
                         </div>
                         <div className="flex justify-end p-2 sm:hidden">
-                            <button className="text-white px-2 py-2 rounded">
+                            <button onClick={() => closeSidebar()} className="text-white px-2 py-2 rounded">
                                 <svg
                                     className="w-9 h-9 text-gray-800 dark:text-white"
                                     aria-hidden="true"
