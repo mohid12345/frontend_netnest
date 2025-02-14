@@ -512,74 +512,6 @@ export const reportPost = (postData) => {
   })
 }
 
-//like post with separate postAction
-// export const likePost = async (postData) => {
-//   try {
-//     const response = await apiCall("post", postUrls.likePost, postData);
-//     return response;
-//   } catch (error) {
-//     console.error('Error in likePost:', error);
-//     throw error;
-//   }
-// };
-
-
-//likepost claude update ( lead to few issues,)(nothign wokring)
-// services/post/likeService.js
-// export const likePost = async (postData) => {
-//    try {
-//     const { userId, postId, postOwnerId } = postData;
-    
-//     // Make the API call to like the post
-//     const response = await apiCall("post", postUrls.likePost, { userId, postId });
-    
-//     // Get the socket instance from the notification context
-//     const { socket } = useNotificationSocket();
-    
-//     // If socket is connected, emit the like notification
-//     if (socket?.current) {
-//       socket.current.emit("post-liked", {
-//         likedBy: userId,
-//         postOwnerId: postOwnerId,
-//         postId: postId,
-//         type: "like",
-//         message: "liked your post"
-//       });
-//     }
-    
-//     return response;
-//   } catch (error) {
-//     console.error('Error in likePost:', error);
-//     throw error;
-//   }
-// };
-
-
-// likePost function with socket emit(by gpt - workig not testes)
-// export const likePost = (postData, socket) => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       console.log('happy socket triggered');
-      
-//       apiCall("post", postUrls.likePost, postData)
-//         .then((response) => {
-//           // Emitting a notification event to the server when a post is liked
-//           socket.emit("post-liked", {
-//             likedBy: postData.userId,  // Assuming userId of the liker is in postData
-//             postOwnerId: postData.postOwnerId,  // Assuming postOwnerId is in postData
-//           });
-//           resolve(response);
-//         })
-//         .catch((err) => {
-//           reject(err);
-//         });
-//     } catch (error) {
-//       resolve({ status: StatusCodes.INTERNAL_SERVER_ERROR, message: "Somethings wrong." });
-//     }
-//   });
-// };
-
-
 // like post
 export const likePost = (postData) => {
   return new Promise((resolve, reject) => {
@@ -785,24 +717,6 @@ export const verifyOTPForEmail = (otp) => {
     }
   })
 }
-
-// verifyOTP for emal
-
-// export const verifyOTPForPswd = (otp) => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       apiCall('post', userUrls.verifyOtpPswd, otp)
-//         .then((response) => {
-//           resolve(response)
-//         })
-//         .catch((err) => {
-//           reject(err)
-//         })
-//     } catch (error) {
-//       resolve({status: StatusCodes.INTERNAL_SERVER_ERROR, message: StringMessages.WRONG})
-//     }
-//   })
-// }
 
 // delete account
 export const deleteAccount = (userId) => {

@@ -257,7 +257,8 @@ function SideNavBar() {
                                 )}
                             </Link>
                         </li>
-
+                        </ul>
+                <ul>
                         <li>
                             <div
                                 onClick={openAddPostModal}
@@ -279,8 +280,11 @@ function SideNavBar() {
                                 <span className="ms-3 text-lg">Create</span>
                             </div>
                         </li>
+                        <div className="">
+
                         {isAddPostOpen && { handleClose } && <CreatePost closeAddPost={closeAddPostModal} />}
-                    </ul>
+                        </div>
+                        </ul>
                     <ul className="pt-4 mt-4 space-y-0 font-medium border-t border-gray-200 dark:border-gray-700">
                         <li>
                             <Link

@@ -22,8 +22,6 @@ function getCroppedImg(imageSrc, crop) {
     });
 
   return createImage(imageSrc).then((image) => {
-    // console.log("loaded img :", image);
-
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
@@ -142,13 +140,10 @@ function CreatePost({ closeAddPost }) {
       setCroppedImages((prev) => [...prev, croppedImageUrl]);
       // Always increment the currentImageIndex, even for the last image
       setCurrentImageIndex((prev) => prev + 1);
-      // console.log("cropped image before pushing 3333:", croppedImages);
     } catch (e) {
       toast.error("Crop failed.");
     }
   }, [croppedAreaPixels, images, currentImageIndex]);
-
-  // console.log("cropped image before pushing: 4444", croppedImages);
 
   const formik = useFormik({
     initialValues: postinitialValues,
@@ -159,7 +154,6 @@ function CreatePost({ closeAddPost }) {
       const imageUrls = [];
 
       try {
-        // console.log("cropped image before pushing 5555 :", croppedImages);
 
         for (let i = 0; i < croppedImages.length; i++) {
           const response = await fetch(croppedImages[i]);
@@ -226,7 +220,7 @@ function CreatePost({ closeAddPost }) {
 
   return (
     // page 1
-    <div className="fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md">
+    <div className="fixed w-screen h-screen top-0 left-0 z-50 bg-black bg-opacity-50 backdrop-blur-md ">
       <div className="flex justify-center items-center h-full">
         <div className="dark:bg-black bg-white p-10 space-y-4 w-full md:mx-80 rounded-md max-h-[90vh] overflow-y-auto">
           <div className="flex justify-between items-center">

@@ -122,29 +122,10 @@ import { adminPostBlock, adminPostList } from '../../services/admin/apiMethods';
                         <img src={post.imgUrl} alt={post.title} className="w-14 h-14 object-cover rounded-lg" />
                       </td>
                       <td className="px-6 py-4">{post.title}</td>
-                      <td className="px-6 py-4 text-center">{post.userId.userName}</td>
+                      <td className="px-6 py-4 text-center">{post?.userId?.userName || "nil"}</td>
                       <td className="px-6 py-4 text-center">{post.likes.length}</td>
                       <td className="px-6 py-4 text-center">{new Date(post.date).toLocaleDateString()}</td>
                       <td className="px-6 py-4 text-center">{post.isBlocked ? 'Blocked' : 'Unblocked'}</td>
-                      {/* <td className="px-6 py-4 text-center">
-                        {post.isBlocked ? (
-                          <button
-                            type="button"
-                            onClick={() => confirmBlockPost(post._id, "unblock")}
-                            className=" bg-white text-blue-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
-                          >
-                            UnBlock
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => confirmBlockPost(post._id, "block")}
-                            className=" bg-white text-red-600 hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-7 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
-                          >
-                            Block
-                          </button>
-                        )}
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>

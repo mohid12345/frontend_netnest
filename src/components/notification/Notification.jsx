@@ -122,7 +122,7 @@ function Notification({ onClose }) {
                                                 onClick={() => goProfile(notification.senderId._id)}
                                                 className="text-blue-700"
                                             >
-                                                {notification.senderId.userName}
+                                                {notification?.senderId?.userName}
                                             </span>{" "}
                                             {notification.message}
                                         </p>
