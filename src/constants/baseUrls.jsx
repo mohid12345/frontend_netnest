@@ -1,2 +1,2 @@
-export const BASE_URL = 'http://localhost:3000'
-// export const BASE_URL = 'https://netnest.online'
+// export const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = 'https://netnest.online'
