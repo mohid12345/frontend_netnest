@@ -184,7 +184,7 @@ function Login() {
               </div>
 
               {/* forgot password */}
-              <div className="text-sm mb-2 text-black flex justify-end mb-6">
+              <div className="text-sm mb-2 text-black flex justify-end ">
                 <Link
                   to="/forgot-password"
                   className="hover:underline hover:text-red-600"
