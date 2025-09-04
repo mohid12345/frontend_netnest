@@ -618,7 +618,7 @@ export const deleteReplyComment = (commentData) => {
 export const getCommentsCount = (postId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${postUrls.commentsCount}/${postId}`
+      const url = `${postUrls.commentCount}/${postId}`
       apiCall("get", url, null)
         .then((response) => {
           resolve(response)

@@ -14,7 +14,7 @@ function NoChat() {
         <div class="group relative text-center">
           <button>
             <svg
-              stroke-linejoin="round"
+              strokeLinejoin="round"
               stroke-linecap="round"
               stroke="currentColor"
               stroke-width="2"
