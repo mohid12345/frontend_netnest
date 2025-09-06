@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { deleteConverstion } from "../../services/user/apiMethods";
 
-function Person({ conversation, currentUser, lastMessages, onlineUsers }) {
+function Person({ conversation, currentUser, lastMessages, onlineUsers, onDeleteConversation}) {
   const [user, setUser] = useState(null);
   const conversationId = conversation._id;
   const [isOnline, setIsOnline] = useState(false);
@@ -13,6 +13,7 @@ function Person({ conversation, currentUser, lastMessages, onlineUsers }) {
       deleteConverstion(id)
         .then((response) => {
           if (response.status === 200) {
+            onDeleteConversation(id)
             toast.success("Conversation deleted successfully");
           }
         })

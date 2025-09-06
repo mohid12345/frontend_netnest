@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getNotifications } from "../../services/user/apiMethods";
+import { getNotifications, deleteNotification } from "../../services/user/apiMethods";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useNotificationSocket } from "../../utils/context/SocketContext/nofi_Socket";
+import { Button } from "flowbite-react";
+import { toast } from "sonner";
 
-function Notification({ onClose }) {
+function Notification({ closeNotification }) {
     const selectedUser = (state) => state.auth.user;
     const user = useSelector(selectedUser);
     const userId = user._id || "";
@@ -13,7 +15,6 @@ function Notification({ onClose }) {
     const navigate = useNavigate();
     const { notificationsLiv } = useNotificationSocket(); // Access notifications from context
 
-    console.log("11111", notificationsLiv);
     useEffect(() => {
         try {
             getNotifications({ userId })
@@ -42,25 +43,39 @@ function Notification({ onClose }) {
 
     //Merging live notificaion from notf_websocket
     useEffect(() => {
-      setNotifications(prevNotifications => {
-          const notificationsMap = new Map();
-  
-          // Add new notifications first (so they appear on top)
-          notificationsLiv.forEach(notif => notificationsMap.set(notif._id, notif));
-  
-          // Then add previous notifications (only if they are not duplicates)
-          prevNotifications.forEach(notif => {
-              if (!notificationsMap.has(notif._id)) {
-                  notificationsMap.set(notif._id, notif);
-              }
-          });
-  
-          // Convert Map back to an array
-          return Array.from(notificationsMap.values());
-      });
-  }, [notificationsLiv]);
-  
-  
+        setNotifications((prevNotifications) => {
+            const notificationsMap = new Map();
+
+            // Add new notifications first (so they appear on top)
+            notificationsLiv.forEach((notif) => notificationsMap.set(notif._id, notif));
+
+            // Then add previous notifications (only if they are not duplicates)
+            prevNotifications.forEach((notif) => {
+                if (!notificationsMap.has(notif._id)) {
+                    notificationsMap.set(notif._id, notif);
+                }
+            });
+
+            // Convert Map back to an array
+            return Array.from(notificationsMap.values());
+        });
+    }, [notificationsLiv]);
+
+    const clearAllNotif = async () => {
+        try {
+            if (notifications.length === 0) {
+                toast("No notificaiton to clear");
+                return;
+            }
+            const result = await deleteNotification(userId);
+            if (result.status === 200) {
+                console.log("success");
+                setNotifications([]);
+            }
+        } catch (error) {
+            console.error("error");
+        }
+    };
 
     return (
         <div className="fixed w-screen h-screen top-0 left-64 z-50 bg-black bg-opacity-30 backdrop-blur-md ml-0 border-l-1">
@@ -69,8 +84,14 @@ function Notification({ onClose }) {
                     <div className="flex-grow flex items-center ml-0">
                         <p className="font-semibold text-xl dark:text-white">Notifications</p>
                     </div>
+
                     <div className="flex justify-end p-2">
-                        <button onClick={() => navigate("/")} className="text-white px-2 py-2 rounded">
+                        <div>
+                            <Button onClick={clearAllNotif} className="bg-gray-500">
+                                clear all
+                            </Button>
+                        </div>
+                        <button onClick={closeNotification} className="text-white px-2 py-2 rounded">
                             <svg
                                 className="w-6 h-6 text-gray-800 dark:text-white"
                                 aria-hidden="true"

@@ -13,9 +13,13 @@
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^7.3.2",
+    "@mui/styled-engine-sc": "^7.3.2",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.3",
     "@zegocloud/zego-uikit-prebuilt": "^2.10.2",
@@ -44,6 +48,7 @@
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.5",
     "sonner": "^1.4.41",
+    "styled-components": "^6.1.19",
     "tailwind-merge": "^2.3.0",
     "wavesurfer.js": "^7.8.6",
     "yup": "^1.4.0"

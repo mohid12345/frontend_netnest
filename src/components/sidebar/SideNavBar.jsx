@@ -5,8 +5,10 @@ import CreatePost from "../posts/CreatePost";
 import Searchbar from "../searchbar/Searchbar";
 import Settings from "../settings/Settings";
 import { useNotificationSocket } from "../../utils/context/SocketContext/nofi_Socket";
+import Notification from "../notification/Notification";
 
 function SideNavBar() {
+    const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
@@ -22,6 +24,7 @@ function SideNavBar() {
     const openAddPostModal = () => {
         setIsAddPostOpen(true);
         closeSidebar();
+        closeNotification();
     };
     const closeAddPostModal = () => {
         setIsAddPostOpen(false);
@@ -44,10 +47,10 @@ function SideNavBar() {
     };
 
     //notifications
-
+    const [notificationOpen, setNotificationOpen] = useState(false);
     const openNotification = () => {
         setNotificationOpen(true);
-        closeSidebar();
+        // closeSidebar();
         closeSearchbar();
     };
     const closeNotification = () => {
@@ -79,6 +82,12 @@ function SideNavBar() {
 
     const handleResetCount = () => {
         setNotifBadge(null);
+    };
+
+    const handleExplore = () => {
+        navigate("/explore");
+        closeNotification();
+        closeSearchbar();
     };
 
     return (
@@ -145,8 +154,13 @@ function SideNavBar() {
 
                     <ul className="space-y-0 font-medium">
                         <li>
-                            <Link
-                                to={"/"}
+                            <div
+                                // to={"/"}
+                                onClick={() => {
+                                    closeNotification();
+                                    closeSearchbar();
+                                    navigate("/");
+                                }}
                                 className="flex items-center p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                             >
                                 <svg
@@ -164,7 +178,7 @@ function SideNavBar() {
                                 </svg>
 
                                 <span className="ms-3 text-lg">Home</span>
-                            </Link>
+                            </div>
                         </li>
                         <li>
                             <div
@@ -211,12 +225,12 @@ function SideNavBar() {
                                 <span className="flex-1 ms-3 whitespace-nowrap text-lg">Message</span>
                             </Link>
                         </li>
-                        <Link to={"/explore"}>
+                        <div
+                            // to={"/explore"}
+                            onClick={handleExplore}
+                        >
                             <li>
-                                <a
-                                    href="#"
-                                    className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                                >
+                                <a className="flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <svg
                                         className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                         aria-hidden="true"
@@ -230,12 +244,15 @@ function SideNavBar() {
                                     <span className="flex-1 ms-3 whitespace-nowrap text-lg">Explore</span>
                                 </a>
                             </li>
-                        </Link>
+                        </div>
 
                         <li>
                             <Link
-                                to={"/notifications"}
-                                onClick={handleResetCount}
+                                // to={"/notifications"}
+                                onClick={() => {
+                                    handleResetCount();
+                                    openNotification();
+                                }}
                                 className={`flex items-center p-2 pb-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer
                         ${location.pathname === "/notifications" ? "bg-gray-100 dark:bg-gray-700 " : "text-gray-800"}
                       `}
@@ -256,11 +273,18 @@ function SideNavBar() {
                                     </span>
                                 )}
                             </Link>
+                            {notificationOpen && <Notification closeNotification={closeNotification} />}
                         </li>
 
                         <li>
                             <div
-                                onClick={openAddPostModal}
+                                // onClick={openAddPostModal}
+                                onClick={() => {
+                                    openAddPostModal()
+                                    closeNotification();
+                                    closeSearchbar();
+                                    navigate("/explore");
+                                }}
                                 className="flex items-center cursor-pointer p-2 pb-3 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
                             >
                                 <svg

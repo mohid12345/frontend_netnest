@@ -338,13 +338,21 @@ function HomePosts({ post, fetchPosts }) {
                 <div onDoubleClick={() => toHandleLike(post._id, user._id)} className=" lg:p-4 sm:p-0">
                     <div id="controls-carousel" className="relative w-full bg-gray-200 rounded-md ">
                         {/* //post image */}
-                        <div className="relative h-56 md:h-96 overflow-hidden   rounded-md">
+                        {/* <div className="relative h-56 md:h-96 overflow-hidden   rounded-md">
                             <div
                                 className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                 data-carousel-item
                             >
-                                <img src={imageUrlArray[currentIndex]} alt={`post ${currentIndex}`} />
+                                <img className="w-full h-full" src={imageUrlArray[currentIndex]} alt={`post ${currentIndex}`} />
                             </div>
+                        </div> */}
+
+                        <div className="relative flex items-center justify-center overflow-hidden rounded-md min-h-[200px] md:min-h-[400px]">
+                            <img
+                                className="h-[490px] max-w-full object-contain"
+                                src={imageUrlArray[currentIndex]}
+                                alt={`post ${currentIndex}`}
+                            />
                         </div>
 
                         <button

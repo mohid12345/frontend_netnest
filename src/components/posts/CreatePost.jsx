@@ -299,7 +299,7 @@ function CreatePost({ closeAddPost }) {
                     image={images[currentImageIndex]}
                     crop={crop}
                     zoom={zoom}
-                    aspect={1}
+                    aspect={5.5/3}
                     onCropChange={setCrop}
                     onZoomChange={setZoom}
                     onCropComplete={onCropComplete}

@@ -17,10 +17,12 @@ function ChatUsers({
   setCurrentChat,
   lastMessages,
   currentChat,
+  onDeleteConversation
 }) {
   const [messageUsersModal, setMessageUsersModal] = useState(false);
   const [chatEligibleUsers, setChatEligibleUsers] = useState([]);
 
+  
   useEffect(() => {
     const userId = user._id;
     getChatElibleUsers({ userId })
@@ -101,7 +103,7 @@ function ChatUsers({
             </svg> */}
             <Link to={"/"}>
               <svg
-                class="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -113,7 +115,7 @@ function ChatUsers({
                   stroke="currentColor"
                   stroke-linecap="round"
                   strokeLinejoin="round"
-                  stroke-width="2"
+                  strokeWidth="2"
                   d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"
                 />
               </svg>
@@ -172,12 +174,13 @@ function ChatUsers({
               {/* {console.log("conversations",conversations)} */}
               {conversations &&
                 conversations.map((conversation) => (
-                  <div onClick={() => setCurrentChat(conversation)}>
+                  <div key={conversation._id} onClick={() => setCurrentChat(conversation)}>
                     <Person
                       currentUser={user}
                       onlineUsers={onlineUsers}
                       conversation={conversation}
                       lastMessages={lastMessages}
+                      onDeleteConversation={onDeleteConversation}
                     />
                     
                   </div>
