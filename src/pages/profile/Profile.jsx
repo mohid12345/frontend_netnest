@@ -10,7 +10,7 @@ import UserEditProfile from "../../components/profile/UserEditProfile";
 import FollowingList from "../../components/profile/FollowingList";
 import FollowersList from "../../components/profile/FollowersList";
 import Loader from "../../components/loader/loader";
-import ViewPost from "../../components/homepost/ViewPost";
+import ShimmerBox from "../../components/loader/ShimmerBox";
 
 function Profile() {
     const navigate = useNavigate();
@@ -20,10 +20,9 @@ function Profile() {
     const user = useSelector(selectedUser);
     const userId = user._id;
     const posts = useSelector(selectPosts) || [];
-    console.log("my :::: ", posts);
 
-    const [loading, setLoading] = useState(false);
-    const [postLoading, setPostLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [postLoading, setPostLoading] = useState(true);
     const [savedPost, setSavedPost] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
@@ -31,7 +30,12 @@ function Profile() {
     const [isFollowingModal, setIsFollowingModal] = useState(false);
     const [isFollowersgModal, setIsFollowersgModal] = useState(false);
     const [currentView, setCurrentView] = useState("posts");
-    const [showViewModel, setShowViewModel] = useState(false);
+
+    useEffect(() => {
+        if (posts.length > 0) {
+            setPostLoading(false);
+        }
+    }, [posts]);
 
     const handleEditModal = () => {
         SetEditProfileOpen(!IsEditProfileOpen);
@@ -102,7 +106,11 @@ function Profile() {
                             {/* <Meteors number={20} /> */}
                             <div className="lg:flex lg:p-8 ml-4 justify-center gap-8 relative z-10 lg:mb-0 mb-2">
                                 <div className="flex ml-2 lg:ml-8 justify-center">
-                                    <img className="w-36 h-36 lg:w-40 lg:h-40 object-cover rounded-full" src={user?.profileImg} alt="" />
+                                    <img
+                                        className="w-36 h-36 lg:w-40 lg:h-40 object-cover rounded-full"
+                                        src={user?.profileImg}
+                                        alt=""
+                                    />
                                 </div>
 
                                 <div className="block lg:ml-10 ml-2 lg:text-start text-center text-black dark:text-white">
@@ -206,12 +214,19 @@ function Profile() {
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2 bg-white dark:bg-black lg:p-2 mt-2 lg:px-10">
-                                    {Array.isArray(posts) &&
-                                        posts.map((post) => (
-                                            <div key={post._id}>
-                                                <PostGallery post={post} fetchPost={fetchPost} />
-                                            </div>
-                                        ))}
+                                    {postLoading
+                                        ? Array.isArray(posts) &&
+                                          posts.map((_, index) => (
+                                              <div key={index}>
+                                                  <ShimmerBox className="w-full h-full" />
+                                              </div>
+                                          ))
+                                        : Array.isArray(posts) &&
+                                          posts.map((post) => (
+                                              <div key={post._id}>
+                                                  <PostGallery post={post} fetchPosts={fetchPost} />
+                                              </div>
+                                          ))}
                                 </div>
                             )
                         ) : savedPost?.length === 0 ? (
@@ -231,7 +246,7 @@ function Profile() {
                                 {Array.isArray(savedPost) &&
                                     savedPost.map((post) => (
                                         <div key={post._id}>
-                                            <PostGallery post={post} fetchPost={fetchPost} />
+                                            <PostGallery post={post} fetchPosts={fetchPost} />
                                         </div>
                                     ))}
                             </div>

@@ -8,11 +8,11 @@ import { io } from "socket.io-client";
 import { BASE_URL } from "../../constants/baseUrls";
 import { addConversation, getLastMessages, getUserConversations, getUserDetails } from "../../services/user/apiMethods1";
 import VideoCallModal from "../../components/chatComponent/VideoCallModal";
-// import ChatNavbar from '../../components/chatComponent/ChatNavbar'
 
 function Chat() {
     const selectUser = (state) => state.auth.user;
     const user = useSelector(selectUser);
+    const location = useLocation()
     const userId = user._id; // Get user ID
     const socket = useRef(null);
     const navigate = useNavigate();
@@ -34,6 +34,7 @@ function Chat() {
 
     // Set conversations of two people
     const { shareUser, sharePost } = location.state || {}; // shareUser is the receiver
+    
     useEffect(() => {
         if (shareUser) {
             const senderId = shareUser._id;

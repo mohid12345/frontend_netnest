@@ -135,7 +135,6 @@ export const renewPassword = (userData) => {
 export const googleAuthenticate = (userData) => {
     return new Promise((resolve, reject) => {
         try {
-            console.log("userdata in api method", userData);
             apiCall("post", userUrls.googleAuth, userData)
                 .then((response) => {
                     resolve(response);

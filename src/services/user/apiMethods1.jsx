@@ -739,9 +739,7 @@ export const getNotifications = (userId) => {
 export const getExplorePosts = (userId) => {
   return new Promise((resolve, reject) => {
     try {
-      console.log("heluuu");
-      
-      apiCall("post", postUrls.getExplorePost, userId)
+   apiCall("post", postUrls.getExplorePost, userId)
       .then((response) =>{
         resolve(response)
       })

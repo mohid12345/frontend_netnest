@@ -1,6 +1,8 @@
 import React from 'react'
 
 function Loader() {
+ 
+  
   return (
     <div class="w-full gap-x-2 flex justify-center items-center">
   <div

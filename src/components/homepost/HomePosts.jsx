@@ -14,13 +14,13 @@ import { toast } from "sonner";
 import { loginSuccess, setPosts } from "../../utils/context/reducers/authSlice";
 import EditPost from "./EditPost";
 import ReportModal from "./ReportModal";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
 import LikedUsers from "./LikedUsers";
 import ViewPost from "./ViewPost";
 import ConfirmationModal from "./ConfirmationModal";
+import SharePost from "../sharePost/SharePost";
 
 function HomePosts({ post, fetchPosts }) {
-    // console.log("updatedpost for like", post);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const selectedUser = (state) => state.auth.user;
@@ -67,7 +67,8 @@ function HomePosts({ post, fetchPosts }) {
 
     //handle dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isCommentsEnabled, setIsCommentsEnabled] = useState(!post.hideComment);
+    const [isCommentsEnabled, setIsCommentsEnabled] = useState(post.hideComment);
+
     const [isLikesEnabled, setIsLikesEnabled] = useState(post.hideLikes);
     const dropdownRef = useRef(null);
 
@@ -174,6 +175,24 @@ function HomePosts({ post, fetchPosts }) {
         setShowLikedUsersPopup(!showLikedUsersPopup);
     };
 
+    //Handle Like
+    // manage like
+    const manageLikes = (postId, userId) => {
+        console.log("postId, userId", postId, userId);
+        handleLike({ postId, userId })
+            .then((response) => {
+                if (response.status === 200) {
+                    setIsLikesEnabled(!isLikesEnabled);
+                }
+                const postData = response.data;
+                dispatch(setPosts({ posts: postData.posts }));
+                toast.success(postData.message);
+            })
+            .catch((error) => {
+                console.error("Error handling like:", error);
+            });
+    };
+
     //comment
     const [showCommentModal, setShowCommentModal] = useState(false);
     const handlePostPopup = () => {
@@ -182,15 +201,13 @@ function HomePosts({ post, fetchPosts }) {
 
     //manage comment
     const manageComment = (postId, userId) => {
-        // console.log("in comment", postId);
         handleComment({ postId, userId })
             .then((response) => {
-                if (response.statuse == 200) {
+                if (response.status == 200) {
                     setIsCommentsEnabled(!isCommentsEnabled);
                 }
                 const postData = response.data;
                 dispatch(setPosts({ posts: postData.posts }));
-                // console.log("data", postData);
                 toast.success(postData.message);
             })
             .catch((error) => {
@@ -231,7 +248,14 @@ function HomePosts({ post, fetchPosts }) {
     const handlePrevImage = () => {
         const prevIndex = (currentIndex - 1 + imageUrlArray.length) % imageUrlArray.length; // Handle rotation
         setCurrentIndex(prevIndex);
-    };
+ };
+        // share post
+        const [sharePostModal, setSharePostModal] = useState(false);
+
+        const handleSharePostModal = () => {
+            setSharePostModal(!sharePostModal);
+        };
+   
 
     return (
         <div className="w-full lg:px-10 lg:p-0 mb-8 mr-2 h-max rounded-md border-none shadow-md bg-white border dark:bg-slate-800 dark:text-white dark:border-gray-400">
@@ -417,20 +441,25 @@ function HomePosts({ post, fetchPosts }) {
                 <div className="text-gray-900 font-bold text-xl  flex justify-between">
                     {/* like, comment, share */}
                     <div className="py-1 mt-0 flex gap-3">
-                        {likeCount}
-                        <div className="group relative">
-                            <button
-                                onClick={() => toHandleLike(post._id, user._id)}
-                                className="transition-transform transform group-hover:scale-110 group-hover:text-red-600 duration-200"
-                            >
-                                {isLikedByUser ? (
-                                    <Heart className="text-red-600 fill-red-600" />
-                                ) : (
-                                    <Heart className="text-black hover:text-gray-600" />
-                                )}
-                            </button>
-                        </div>
-                        {commentsCount}
+                        {isLikesEnabled && (
+                            <div className="flex items-center gap-2">
+                                <span>{likeCount}</span>
+                                <div className="group relative">
+                                    <button
+                                        onClick={() => toHandleLike(post._id, user._id)}
+                                        className="transition-transform transform group-hover:scale-110 duration-200"
+                                    >
+                                        {isLikedByUser ? (
+                                            <Heart className="w-6 h-6 text-red-600 fill-red-600" />
+                                        ) : (
+                                            <Heart className="w-6 h-6 text-black group-hover:text-gray-600" />
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {isCommentsEnabled ? <div>{commentsCount}</div> : null}
                         <div className="group relative">
                             <button
                                 onClick={() => handlePostPopup()}
@@ -440,11 +469,14 @@ function HomePosts({ post, fetchPosts }) {
                             </button>
                         </div>
 
-                        {/* <div className='group relative'>
-              <div onClick={handleSharePostModal} className='transition-transform transform group-hover:scale-110 duration-200'>
-              <Share2 className='text-black hover:text-gray-600'/>
-              </div>
-            </div> */}
+                        <div className="group relative">
+                            <div
+                                onClick={handleSharePostModal}
+                                className="transition-transform transform group-hover:scale-110 duration-200"
+                            >
+                                <Share2 className="text-black hover:text-gray-600" />
+                            </div>
+                        </div>
                     </div>
                     {/* save post */}
 
@@ -502,9 +534,9 @@ function HomePosts({ post, fetchPosts }) {
                     <div>
                         {!isLikesEnabled && (
                             <div>
-                                {/* <span className='font-semibold cursor-pointer ml-2 py-0 text-slate-600'>
-                likes are hidden
-              </span> */}
+                                <span className="font-semibold cursor-pointer ml-2 py-0 text-slate-600">
+                                    likes are hidden
+                                </span>
                             </div>
                         )}
                         {isLikesEnabled && (
@@ -564,9 +596,9 @@ function HomePosts({ post, fetchPosts }) {
                     isSavedByUser={isSavedByUser}
                     handleSave={handleSave}
                     isCommentsEnabled={isCommentsEnabled}
-                    // isLikesEnabled={isLikesEnabled}
+                    isLikesEnabled={isLikesEnabled}
                     manageComment={manageComment}
-                    // manageLikes={manageLikes}
+                    manageLikes={manageLikes}
                     fetchPosts={fetchPosts}
                     commentsCount={commentsCount}
                     getCommentsCount={getCommentsCount}
@@ -575,9 +607,7 @@ function HomePosts({ post, fetchPosts }) {
 
             {showLikedUsersPopup && <LikedUsers likedUsers={likedUsers} onClose={handleLikedUsersPopup} />}
 
-            {/* {sharePostModal && (
-          <SharePost onClick={handleSharePostModal} post= {post}/>
-        )} */}
+            {sharePostModal && <SharePost onClose={handleSharePostModal} post={post} />}
 
             {IsEditPostOpen && (
                 <EditPost handlePostEdit={handlePostEdit} postId={currentPostId} userId={userId} fetchPosts={fetchPosts} />

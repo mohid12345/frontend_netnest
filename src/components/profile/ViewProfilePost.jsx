@@ -9,18 +9,22 @@ import {
     deletePost,
     deleteReplyComment,
     getPostComments,
+    handleComment,
+    handleLike,
+    likePost,
     replyComment,
 } from "../../services/user/apiMethods";
-import LikedUsers from "./LikedUsers";
-import EditPost from "./EditPost";
-import ReportModal from "./ReportModal";
 import { toast } from "sonner";
-import { setPosts } from "../../utils/context/reducers/authSlice";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import ConfirmationModal from "./ConfirmationModal";
+import ConfirmationModal from "../homepost/ConfirmationModal";
+import { setPosts } from "../../utils/context/reducers/authSlice";
+import ReportModal from "../homepost/ReportModal";
+import EditPost from "../homepost/EditPost";
+import LikedUsers from "../homepost/LikedUsers";
+import ShimmerBox from "../loader/ShimmerBox";
 
-function ViewPost({
+function ViewProfilePost({
     post,
     onClose,
     toHandleLike,
@@ -50,8 +54,6 @@ function ViewPost({
     const postUserId = post.userId;
     const profileImg = postUserId.profileImg;
     const userName = postUserId.userName;
-    const postIds = user.savedPost;
-
 
     // navigate to user profile
     const handleSearch = (postUserId) => {
@@ -82,24 +84,6 @@ function ViewPost({
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
-    // delete post
-    // const handleDeletePost = (postId, userId) => {
-    //   try {
-    //     deletePost({postId, userId})
-    //       .then((response) => {
-    //         const postData = response.data
-    //         dispatch(setPosts({posts: postData.posts}))
-    //         fetchPosts()
-    //         toast.info("post deleted")
-    //       })
-    //       .catch((error) => {
-    //         toast.error(error.message);
-    //       });
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // }
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
@@ -148,51 +132,6 @@ function ViewPost({
         setReportModal(!reportModal);
         handleClickOutside();
     };
-
-    // like post
-    // const [showLikedUsersPopup, setShowLikedUsersPopup] = useState(false);
-    // const [likeCount, setLikeCount] = useState(post.likes.length);
-    // const [likedUsers, setLikedUsers] = useState(post.likes);
-    // const [isLikedByUser, setIsLikedByUser] = useState(post.likes.includes(userId));
-
-    // useEffect(() => {
-    //   setIsLikedByUser(likedUsers.some((likedUser) => likedUser._id === user._id));
-    // }, [likedUsers, user._id]);
-
-    // const toHandleLike = (postId, userId) => {
-    //   try {
-    //     likePost({ postId, userId })
-    //       .then((response) => {
-    //         const postData = response.data;
-    //         dispatch(setPosts({ posts: postData.posts }));
-
-    //         // Toggle the like state
-    //         setIsLikedByUser((prevIsLiked) => {
-    //           if (prevIsLiked) {
-    //             setLikedUsers((prevLikedUsers) =>
-    //               prevLikedUsers.filter((likedUser) => likedUser._id !== userId)
-    //             );
-    //             setLikeCount((prev) => prev - 1);
-    //           } else {
-    //             setLikedUsers((prevLikedUsers) => [
-    //               ...prevLikedUsers,
-    //               { _id: userId },
-    //             ]);
-    //             setLikeCount((prev) => prev + 1);
-    //           }
-    //           return !prevIsLiked;
-    //         });
-    //       })
-    //       .catch((error) => {
-    //         toast.error(error.message);
-    //       });
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // };
-    // const handleLikedUsersPopup = () => {
-    //   setShowLikedUsersPopup(!showLikedUsersPopup);
-    // };
 
     // comment
     const [comments, setComments] = useState([]);
@@ -504,74 +443,78 @@ function ViewPost({
                                             id="controls-carousel"
                                             className="relative w-full max-w-lg mx-auto bg-white rounded-md "
                                         >
-                                            <div className="relative w-full pb-[100%] overflow-hidden ">
-                                                <div className="absolute inset-0" data-carousel-item>
-                                                    <img
-                                                        className="absolute w-full h-full object-cover rounded-md"
-                                                        src={imageUrlArray[currentIndex]}
-                                                        alt={`post ${currentIndex}`}
-                                                    />
-                                                </div>
-                                                {imageUrlArray.length > 1 ? (
-                                                    <div>
-                                                        <button
-                                                            type="button"
-                                                            className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                                            data-carousel-prev
-                                                        >
-                                                            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                                                <svg
-                                                                    onClick={handlePrevImage}
-                                                                    className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180"
-                                                                    aria-hidden="true"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    fill="none"
-                                                                    viewBox="0 0 6 10"
-                                                                >
-                                                                    <path
-                                                                        stroke="currentColor"
-                                                                        stroke-linecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        stroke-width="2"
-                                                                        d="M5 1 1 5l4 4"
-                                                                    />
-                                                                </svg>
-                                                                <span className="sr-only">Previous</span>
-                                                            </span>
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            className="absolute top-0 end-0  flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                                            data-carousel-next
-                                                        >
-                                                            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                                                <svg
-                                                                    onClick={handleNextImage}
-                                                                    className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180"
-                                                                    aria-hidden="true"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    fill="none"
-                                                                    viewBox="0 0 6 10"
-                                                                >
-                                                                    <path
-                                                                        stroke="currentColor"
-                                                                        stroke-linecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        stroke-width="2"
-                                                                        d="m1 9 4-4-4-4"
-                                                                    />
-                                                                </svg>
-                                                                <span className="sr-only">Next</span>
-                                                            </span>
-                                                        </button>
-                                                        <div className="absolute top-0 start-0 p-2 m-2 bg-slate-100/50 rounded-lg">
-                                                            <div className="text-gray-800">{`${currentIndex + 1}/${
-                                                                imageUrlArray.length
-                                                            }`}</div>
-                                                        </div>
+                                            {imageUrlArray.length > 0 ? (
+                                                <div className="relative w-full pb-[100%]  overflow-hidden ">
+                                                    <div className="absolute inset-0" data-carousel-item>
+                                                        <img
+                                                            className="absolute w-full h-full object-cover rounded-md"
+                                                            src={imageUrlArray[currentIndex]}
+                                                            alt={`post ${currentIndex}`}
+                                                        />
                                                     </div>
-                                                ) : null}
-                                            </div>
+                                                    {imageUrlArray.length > 1 ? (
+                                                        <div>
+                                                            <button
+                                                                type="button"
+                                                                className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                                data-carousel-prev
+                                                            >
+                                                                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                                    <svg
+                                                                        onClick={handlePrevImage}
+                                                                        className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180"
+                                                                        aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none"
+                                                                        viewBox="0 0 6 10"
+                                                                    >
+                                                                        <path
+                                                                            stroke="currentColor"
+                                                                            stroke-linecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            stroke-width="2"
+                                                                            d="M5 1 1 5l4 4"
+                                                                        />
+                                                                    </svg>
+                                                                    <span className="sr-only">Previous</span>
+                                                                </span>
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                className="absolute top-0 end-0  flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                                                                data-carousel-next
+                                                            >
+                                                                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                                                    <svg
+                                                                        onClick={handleNextImage}
+                                                                        className="w-4 h-4 text-black dark:text-gray-800 rtl:rotate-180"
+                                                                        aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none"
+                                                                        viewBox="0 0 6 10"
+                                                                    >
+                                                                        <path
+                                                                            stroke="currentColor"
+                                                                            stroke-linecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            stroke-width="2"
+                                                                            d="m1 9 4-4-4-4"
+                                                                        />
+                                                                    </svg>
+                                                                    <span className="sr-only">Next</span>
+                                                                </span>
+                                                            </button>
+                                                            <div className="absolute top-0 start-0 p-2 m-2 bg-slate-100/50 rounded-lg">
+                                                                <div className="text-gray-800">{`${currentIndex + 1}/${
+                                                                    imageUrlArray.length
+                                                                }`}</div>
+                                                            </div>
+                                                        </div>
+                                                    ) : null}
+                                                </div>
+                                            ) : (
+                                                <ShimmerBox className="w-full h-full" />
+                                            )}
                                         </div>
                                     </div>
 
@@ -784,9 +727,7 @@ function ViewPost({
                                             )}
 
                                             <div className="group relative">
-                                                <button
-                                                    className="transition-transform transform group-hover:scale-110 duration-200"
-                                                >
+                                                <button className="transition-transform transform group-hover:scale-110 duration-200">
                                                     <MessageCircle className="text-black hover:text-gray-600" />
                                                 </button>
                                             </div>
@@ -980,4 +921,4 @@ function ViewPost({
     );
 }
 
-export default ViewPost;
+export default ViewProfilePost;

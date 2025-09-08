@@ -322,7 +322,7 @@ function CreatePost({ closeAddPost }) {
                 >
                   <div className="flex overflow-x-auto w-full mb-4 ">
                     {croppedImages.map((img, index) => (
-                      <div key={index} className="relative h-20 w-20 mr-2">
+                      <div key={index} className="relative h-16 w-16 mr-2">
                         <img
                           src={img}
                           alt={`Cropped ${index + 1}`}
@@ -345,7 +345,7 @@ function CreatePost({ closeAddPost }) {
                       <img
                         src={selectedImage} // selected image from state
                         alt="selected"
-                        className="h-80 w-full  object-contain"
+                        className=" w-full  object-contain"
                       />
                     ) : (
                       <p>No image selected</p>
