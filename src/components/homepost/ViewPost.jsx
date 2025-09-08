@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'; 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { CircleX, Heart, MessageCircle, Share2, Trash2, X } from 'lucide-react';
+import { CircleX, Heart, MessageCircle, Share2, Trash2 } from 'lucide-react';
 import { SavePost, addComment, deleteComment, deletePost, deleteReplyComment, getPostComments, handleComment, handleLike, likePost, replyComment } from '../../services/user/apiMethods';
 import LikedUsers from './LikedUsers';
 import EditPost from './EditPost';
 import ReportModal from './ReportModal';
 import { toast } from 'sonner';
-import { loginSuccess, setPosts } from '../../utils/context/reducers/authSlice';
+import { setPosts } from '../../utils/context/reducers/authSlice';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { data } from 'autoprefixer';

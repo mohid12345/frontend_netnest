@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import VoicePlayer from "./VoicePlayer ";
+import VoicePlayer from "./VoicePlayer";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { deleteOneMsg } from "../../services/user/apiMethods";
 import { toast } from "sonner";
+import ImageWithLoader from "./accessories/ImageWithLoader";
 
 
 function SendedChat({ message }) {
@@ -65,14 +66,21 @@ function SendedChat({ message }) {
               </div>
             </div>
           )}
-          {message.attachment && message.attachment.type === "image" && (
+          {/* {message.attachment && message.attachment.type === "image" && (
             <img
               key={message.attachment.url}
               src={message.attachment.url}
               alt=""
               className="relative rounded-lg object-cover w-2/4 h-full"
             />
-          )}
+          )} */}
+          {message?.attachment && message?.attachment.type === "image" && (
+                        <ImageWithLoader
+                            src={message?.attachment.url || message?.attachment.filename}
+                            alt=""
+                            className="w-2/4 h-full"
+                        />
+                    )}
           {message.attachment && message.attachment.type === "video" && (
             <video
               controls

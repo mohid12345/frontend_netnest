@@ -110,8 +110,8 @@ function VideoCall() {
     if(!containerRef.current) return
 
     const myMeeting = async() => {
-            const appId = 189425334;
-      const serverSecret = "4e366a27ef6820a005c98dac0bbf3e20";
+            const appId = 1203733670;
+      const serverSecret = "c22d61a3a0eeb27ce3e2cc197de0c985";
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appId,
         serverSecret,

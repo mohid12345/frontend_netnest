@@ -163,7 +163,7 @@ function Chat() {
     };
 
 
-
+//remove the duplication caused, by  pagenation/infinity-scroll
     useEffect(() => {
         if (!currentChat || !conversations?.length) return;
 

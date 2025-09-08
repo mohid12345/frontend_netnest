@@ -54,13 +54,6 @@ function Messages({
         });
     }, [currentChat, onlineUsers]);
 
-    //general 2
-    // useEffect(() => {
-    //   if (scrollRef.current) {
-    //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    //   }
-    // }, [messages]);
-
     //for video call
     function randomID(len) {
         let result = "";
@@ -190,7 +183,7 @@ function Messages({
         audio.controls = true;
         document.body.appendChild(audio);
 
-        const audioFile = new File([blob], `${Date.now()}%2Baudio.mp3`, {
+        const audioFile = new File([blob], `${Date.now()}_audio.mp3`, {
             type: "audio/mpeg",
         });
         handleSubmit(audioFile);
